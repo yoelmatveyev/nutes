@@ -12,5 +12,8 @@ The head of the machine reads the current cell and the two adjacent cells on bot
 
 a b c d e
 
-The cells ## a and ## e contain relative addresses to two other cells. The value of those cells, v1 and v2, are replaced, respectively, by v1-v2 and v2-v1. Depending on the sign of v1-v2, the head jumps to ## b cells, if the result is positive, to ## c cells, if the result is negative, or to ## d cells, if the result is negative. The computation continues until both ## c and the values pointed by ## a and ## e are 0, in which case the machine halts.
+The cells a and e contain relative addresses to two other cells. The value of those cells, v1 and v2, are replaced, respectively, by v1-v2 and v2-v1. Depending on the sign of v1-v2, the head jumps to b cells, if the result is positive, to c cells, if the result is negative, or to d cells, if the result is negative. The computation continues until both c and the values pointed by a and e are 0, in which case the machine halts.
 
+# Copyright
+
+Yoel Matveyev, 2017
