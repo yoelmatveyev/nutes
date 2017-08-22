@@ -36,7 +36,7 @@ The head reads two values, both located by 4 cells to the right of its current l
 
 .. 100 0 0 0 -3 5 5 5 -6 11 5 5 5 -8 -13 0 (Head)-> 0 0 -13 0 0 0 100 ..
 
-The machine copies the value of a cell (100) and halts.
+The machine copies the value of a cell (100), removes the intermediary result (-100) and halts.
 
 # More about the balanced ternary
 
