@@ -14,7 +14,7 @@ The head of the machine reads the current cell and the two adjacent cells on bot
 
 a b c d e
 
-The cells a and e contain relative addresses to two other cells. The value of those cells, v1 and v2, are replaced, respectively, by v1-v2 and v2-v1. Depending on the sign of v1-v2, the head jumps to b cells, if the result is positive, to c cells, if the result is negative, or to d cells, if the result is negative. The computation continues until both c and the values pointed by a and e are 0, in which case the machine halts.
+The cells a and e contain relative addresses to two other cells. The value of those cells, v1 and v2, are replaced, respectively, by v1-v2 and v2-v1. Depending on the sign of v1+v2, the head jumps to b cells, if the result is positive, to c cells, if the result is negative, or to d cells, if the result is negative. The computation continues until both c and the values pointed by a and e are 0, in which case the machine halts. Note that depending on the tape width the results of the addition may be overflown and change its sign, e.g. 1000+1000 is -187, if the tape width is 6, in which case possible values of the cell are range from -362 to 362.
 
 # Examples:
 
@@ -37,6 +37,18 @@ The head reads two values, both located by 4 cells to the right of its current l
 .. 100 0 0 0 -3 5 5 5 -6 11 5 5 5 -8 -13 0 (Head)-> 0 0 -13 0 0 0 100 ..
 
 The machine copies the value of a cell (100), removes the intermediary result (-100) and halts.
+
+# Rationale
+
+While the double negation and the triple branching based on addition may seem at first somewhat bizarre and redundant, this particular instruction exhibit an unusual symmetry, impossible in common real-life instruction sets. Because the cells do not have absolute addresses, the machine is truly Turing-complete, assuming that the tape is infinite. There is no essencial bias in favor of positive and negative numbers, as well as between the right and left direction of movement on the tape, although the sign and the direction are inherently linked to each other. Any program rewritten completely in reverse, while the sign of all its cells is reversed, performs exactly the same computation (except that all results, naturally, also have their sign reversed). Consider the following two possible scenarios:
+
+Step 0: .. 0 0 2 -3 -5 (Head)-> 10 5 3 7 0 0 ..
+Step 1: .. (Head)-> 0 0 -5 -3 -5 10 5 3 5 0 0 ..
+
+Step 0: .. 0 0 -7 -3 -5 (Head) -> -10 5 3 -2 0 0 ..
+Step 1: .. 0 0 -5 -3 -5 -10 5 3 5 0 (Head)-> 0 ..
+
+Sign reversion is identical to direction reversion. This feature may help to understand better programming in balanced ternary and to perform automatic code manipulatioms.
 
 # More about the balanced ternary
 
