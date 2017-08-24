@@ -53,17 +53,18 @@
        (j0 (elt v (mod p l)))
        (a+ (elt v (mod (+ p p+) l)))
        (a- (elt v (mod (+ p p-) l)))
-       (res (coerce-width (- a+ a-) (tape-width tape))))
-    (setf (elt v (mod (+ p p+) l)) res)
-    (setf (elt v (mod (+ p p-) l)) (- res))
+       (sub (coerce-width (- a+ a-) (tape-width tape)))
+       (add (coerce-width (+ a+ a-) (tape-width tape))))
+    (setf (elt v (mod (+ p p+) l)) sub)
+    (setf (elt v (mod (+ p p-) l)) (- sub))
     (cond
-      ((> res 0) (setf (tape-position tape) (mod (+ p j+) l)))
-       ((= res 0) (setf (tape-position tape) (mod (+ p j0) l))
+      ((> add 0) (setf (tape-position tape) (mod (+ p j+) l)))
+       ((= add 0) (setf (tape-position tape) (mod (+ p j0) l))
 	(if (and (zerop j0) (zerop a+) (zerop a-))
 	    (setf (tape-halted tape) t))
 	(list (elt v (mod (- p 1) l))
 	      (elt v (mod (+ p 1) l))))
-       ((< res 0) (setf (tape-position tape) (mod (+ p j-) l))))))
+       ((< add 0) (setf (tape-position tape) (mod (+ p j-) l))))))
 
 ;; Running our tape
 
