@@ -14,7 +14,7 @@ The head of the machine reads the current cell and the two adjacent cells on bot
 
 x jn jz jp y
 
-The cells x and y contain relative addresses to two other cells. The value of those cells, v1 and v2, are replaced, respectively, by v1-v2 and v2-v1. Depending on the sign of v1+v2, the head jumps to jn cells, if the result is negative, to jz cells, if the result is negative, or to jp cells, if the result is positive. The computation continues until both jz and the values pointed by x and y are 0, in which case the machine halts. 
+The cells x and y contain relative addresses to two other cells. The value of those cells, v1 and v2, are replaced, respectively, by v1-v2 and v2-v1. Depending on the sign of v1+v2, the head jumps to jn cells, if the result is negative, to jz cells, if the result is zero, or to jp cells, if the result is positive. The computation continues until both jz and the values pointed by x and y are 0, in which case the machine halts. 
 
 Note that depending on the tape width the results of the addition may be overflown and change its sign, e.g. 1000+1000 is -187, if the tape width is 6, in which case possible values of the cell are range from -362 to 362.
 
