@@ -32,7 +32,7 @@ Note that unlike SUBLEQ, another esoteric one instruction machine, which inspire
 
 ..1 1 -2 (Head)-> 4 -3 4 0 18 20
 
-The head reads two operand pointers, both located by -2 cells to the left of its current location. The sign sum of the operands, both being 1, is actually negative: 1+1=1T (+-) in balanced ternary. The lowest digit is negative. The indirect branching pointer directs to the branching sequence of 0 18 20. Since the jump address for the negative case is 0 and the result of subtraction is 0, the machine halts:
+The head reads two operand pointers, both located by -2 cells to the left of its current location. The sign sum of the operands, both being 1, is actually **negative**: 1+1=1T (+-) in balanced ternary. The lowest digit is negative. The indirect branching pointer directs to the branching sequence of 0 18 20. Since the jump address for the negative case is 0 and the result of subtraction is 0, the machine halts:
 
 ..0 0 -2 4 -3 4 0 (Halted) 18 20
 
@@ -40,11 +40,9 @@ The head reads two operand pointers, both located by -2 cells to the left of its
 
 While the double negation and the triple branching based on the signs of the operands  may seem somewhat bizarre and redundant, this particular complex instruction exhibit an unusual symmetry, impossible in common real-life instruction sets. Because the cells do not have absolute addresses, the machine is truly Turing-complete, assuming that the tape is infinite. There is no essencial bias in favor of positive and negative numbers, as well as between the right and left direction of movement on the tape, although the sign and the direction are inherently linked to each other. Any program rewritten completely in reverse, while the sign of all its cells is reversed, performs exactly the same computation (except that all results, naturally, also have their sign reversed). Using the same example as above negated in reverse:
 
-..1 1 -2 (Head)-> 4 -3 4 0 18 20
-
 -20 -18 0 -4 3 (Head)-> -4 2 -1 -1
 
-The sign sum is now positive, because -1-1=T1 (-+) in balanced ternary. The result is exactly the same as above. The jump address, now for the positive case is 0 and the result of subtraction is 0. The machine halts.  
+The sign sum is now **positive**, because -1-1=T1 (-+) in balanced ternary. The result is exactly the same as above. The jump address, now for the positive case is 0 and the result of subtraction is 0. The machine halts.  
 
 This unusual symmetrical feature, much in the spirit of the general symmetrical nature of balanced ternary arithmetics, may help to understand better ternary programming and even, perhaps, to perform some automated code manipulatioms.
 
