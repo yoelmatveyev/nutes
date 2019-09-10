@@ -8,7 +8,7 @@ The machine is Turing-complete, because it is easy to implement other instructio
 
 # Description
 
-The Nutes machine operates on either an infinite (theoretically) or circular memory tape divided into cells. Depending on the tape width, each cell contains either unbounded whole numbers or balanced ternary numbers composed of a particular number of trits, the ternary equivalent of bits. For example, each cell on a tape of a machine with the width of 3 may contain a number from -13 to +13 (from -3^2-3^1-3^0 to 3^2+3^1+3^0). The suggested practical minimal width is 6 or a tryte, a group of 6 trits or powers of 3 from 0 to 5, roughly comparable to a byte, like in the Russian machine.
+The Nutes machine operates on either an infinite (theoretically) or circular memory tape divided into cells. Depending on the tape width, each cell contains either unbounded whole numbers (not implemented yet) or balanced ternary numbers composed of a particular number of trits, the ternary equivalent of bits. For example, each cell on a tape of a machine with the width of 3 may contain a number from -13 to +13 (from -3^2-3^1-3^0 to 3^2+3^1+3^0). The suggested practical minimal width is 6 or a tryte, a group of 6 trits or powers of 3 from 0 to 5, roughly comparable to a byte, like in the Russian machine.
 
 The head of the machine reads the current cell and two other cells next to it on both sides of the tape:
 
