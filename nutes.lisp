@@ -39,6 +39,11 @@
 (defun mod+ (m)
   (lambda (&rest x) (mod (apply #'+ x) m)))
 
+;; Ternary analog of XOR
+
+(defun ternary-xor (x y)
+  (1- (mod (+ 1 (signum x)(signum y))3)))
+
 ;; Our main 'CPU'
 
 (defun one-step (tape)
@@ -46,25 +51,28 @@
       ((p (tape-position tape))
        (v (tape-vector tape))
        (l (tape-length tape))
-       (p+ (elt v (mod (- p 2) l)))
-       (p- (elt v (mod (+ p 2) l)))
-       (j- (elt v (mod (- p 1) l)))
-       (j+ (elt v (mod (+ p 1) l)))
-       (j0 (elt v (mod p l)))
+       (p+ (elt v (mod (- p 1) l)))
+       (p- (elt v (mod (+ p 1) l)))
+       (j (elt v (mod p l)))
+       (j- (elt v (mod (+ p j -1) l)))
+       (j+ (elt v (mod (+ p j 1) l)))
+       (j0 (elt v (mod (+ p j) l)))
        (a+ (elt v (mod (+ p p+) l)))
        (a- (elt v (mod (+ p p-) l)))
        (sub (coerce-width (- a+ a-) (tape-width tape)))
-       (add (coerce-width (+ a+ a-) (tape-width tape))))
+       (sign (ternary-xor a+ a-)))
     (setf (elt v (mod (+ p p+) l)) sub)
     (setf (elt v (mod (+ p p-) l)) (- sub))
-    (cond
-      ((> add 0) (setf (tape-position tape) (mod (+ p j+) l)))
-       ((= add 0) (setf (tape-position tape) (mod (+ p j0) l))
-	(if (and (zerop j0) (zerop a+) (zerop a-))
-	    (setf (tape-halted tape) t))
-	(list (elt v (mod (- p 1) l))
-	      (elt v (mod (+ p 1) l))))
-       ((< add 0) (setf (tape-position tape) (mod (+ p j-) l))))))
+    (case sign
+      (1 (setf (tape-position tape) (mod (+ p j+) l)))
+      (0 (setf (tape-position tape) (mod (+ p j0) l)))
+      (-1 (setf (tape-position tape) (mod (+ p j-) l))))
+	(if (and (zerop j0) (zerop sub))
+	    (progn (setf (tape-halted tape) t)
+	    (list (elt v (mod (- p 1) l))
+	    (elt v (mod (+ p 1) l)))
+	    (print "Program halted")))))
+
 
 ;; Running our tape
 
@@ -78,4 +86,7 @@
 	(terpri)
 	(print "Hm.. no termination after so many steps? Giving up for now")))))
 	  
+
+
+
   
