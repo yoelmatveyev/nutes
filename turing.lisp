@@ -1,6 +1,9 @@
 (load "nutes.lisp")
 
-;;; This test demonstrates Turing-completeness of our OISC virtual machine by implementing a generalized version of SUBLEQ known to be Turing-complete. The implementation allows to set different or identical branch addresses for positive, negative and zero result.
+;;; This test demonstrates Turing-completeness of our OISC virtual machine by implementing 
+;;; a generalized version of SUBLEQ known to be Turing-complete. 
+;;; The implementation allows to set different or identical branch addresses for positive, negative and zero results.
+;;; In case all three addresses are identical, it serves as plain subtruction.
 
 ;; generalized subleq generator, counting operands and jumps from the entry point (-3 15 a)
 
