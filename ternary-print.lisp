@@ -1,5 +1,5 @@
 ;; A couple of simple functions to represent numbers in balanced 3, 9 and 27 base.
-
+;; Requires Unicode, because negative digits are overlined (perfectly works in Emacs)  
 
 ;; Balanced version of modulo
 
