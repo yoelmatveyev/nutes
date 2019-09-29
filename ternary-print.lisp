@@ -1,4 +1,4 @@
-;; A couple of simple functions to represent number in balanced 3, 9 and 27 base.
+;; A couple of simple functions to represent numbers in balanced 3, 9 and 27 base.
 
 
 ;; Balanced version of modulo
