@@ -39,10 +39,15 @@
 (defun mod+ (m)
   (lambda (&rest x) (mod (apply #'+ x) m)))
 
-;; Ternary analog of XOR
+;; Ternary analog of XOR (might be useful for something)
 
 (defun ternary-xor (x y)
   (1- (mod (+ 1 (signum x)(signum y))3)))
+
+;; Sign sum function
+
+(defun sign-sum (x y)
+  (signum (+ (signum x)(signum y))
 
 ;; Our main 'CPU'
 
@@ -60,7 +65,7 @@
        (a+ (elt v (mod (+ p p+) l)))
        (a- (elt v (mod (+ p p-) l)))
        (sub (coerce-width (- a+ a-) (tape-width tape)))
-       (sign (ternary-xor a+ a-)))
+       (sign (sign-sum a+ a-)))
     (setf (elt v (mod (+ p p+) l)) sub)
     (setf (elt v (mod (+ p p-) l)) (- sub))
     (case sign
