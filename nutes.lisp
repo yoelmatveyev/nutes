@@ -47,7 +47,7 @@
 ;; Sign sum function
 
 (defun sign-sum (x y)
-  (signum (+ (signum x)(signum y)))
+  (signum (+ (signum x)(signum y))))
 
 ;; Our main 'CPU'
 
