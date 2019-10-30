@@ -3,7 +3,7 @@
 
 ;; Balanced version of modulo
 
- (defun bmod (n b)
+(defun bmod (n b)
 	   (let ((a (floor b 2)))
 	     (- (mod (+ n a) b) a)))
 
@@ -42,4 +42,4 @@
 ;; Print a number in 3,9 or 27 balanced base
 
 (defun ternary-format (n &optional (base 3))
-	   (format t (apply #'concatenate 'string (ternary-list n base))))
+(format t (apply #'concatenate 'string (ternary-list n base))))
