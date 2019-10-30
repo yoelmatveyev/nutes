@@ -8,9 +8,7 @@ The machine is Turing-complete, because it is easy to implement other instructio
 
 # Description
 
-The Nutes machine operates on either an infinite (theoretically) or circular memory tape divided into cells. Each cell contains a word of a certain number of trits, the ternary equivalent of bits. For example, each cell on a tape of a machine with the width of 3 may contain a number from -13 to +13 (from -3^2-3^1-3^0 to 3^2+3^1+3^0). The suggested bare minimal word width is 6 trits or a tryte, a group of 6 trits, like the minimal addressable memory unit in the original Russian machine. However, the length of machine words in Setun computers was 9 trits and its accumulator had 18 trits. 9 trits seems to be a somewhat practical minimum, 18 or 27 trits seem more suitable, and 36-trit words roughly correspond to today's 64-bit computers (36 trits are approximately 57 bits), while 48-trit words corespond to approximately 76 bits.
-
-After a series of practical experiments, the 36-trit was chosen as the most suitable, fitting nicely into 64-bit vectors. It also works well with the IO engine and other extensions (work in progress, yet to be defined). 
+The Nutes machine operates on either an infinite (theoretically) or circular memory tape divided into cells. Each cell contains a word of 36 trits, the ternary equivalent of bits.
 
 The head of the machine reads the current cell and two other cells next to it on both sides of the tape:
 
@@ -51,6 +49,14 @@ While the double negation and triple branching based on the signs of the operand
 The sign sum is now negative. The result is exactly the same as above. The jump address, now for the negative case is 0 and the result of subtraction is 0. The machine halts.  
 
 This unusual symmetrical feature, much in the spirit of the general symmetrical nature of balanced ternary arithmetics, may help to understand better ternary programming and even, perhaps, to perform some automated code manipulatioms.
+
+# Remarks
+
+If one wishes to switch the word width, use nutes-exp.lisp instead of nutes.lisp. However, it's highly recommended to use the current settings.
+
+The suggested bare minimal word width is 6 trits or a tryte, a group of 6 trits, like the minimal addressable memory unit in the original Russian machine. However, the length of machine words in Setun computers was 9 trits and its accumulator had 18 trits. 9 trits seems to be a somewhat practical minimum, 18 or 27 trits seem more suitable, and 36-trit words roughly correspond to today's 64-bit computers (36 trits are approximately 57 bits), while 48-trit words corespond to approximately 76 bits.
+
+After a series of practical experiments, the 36-trit has been chosen as the most suitable, fitting nicely into 64-bit vectors. It also works well with the IO engine and other future extensions (work in progress, yet to be defined in accordance of the direction/sign symmetry mentioned above and the principled lack of absolute addresses). 
 
 # More about the balanced ternary
 
