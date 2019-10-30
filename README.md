@@ -40,7 +40,7 @@ The head reads two operand pointers, both located by -2 cells to the left of its
 
 # Current state
 
-A rudimentary interactive assembler indended to be used in REPL and a basic set of composed instructions, such as addition, subtraction, left shift (identical in balanced ternary to multiplication by 3), setting variables, comparison, swapping etc. allow to write simple programs. Examples include slow multiplication by repeated additions, Fibonacci numbers and factorial.
+A rudimentary interactive assembler indended to be used in REPL and a basic set of composed instructions, such as addition, subtraction, left shift (identical in balanced ternary to multiplication by 3), setting variables, comparison, swapping etc. allow to write simple programs. Examples include slow multiplication by repeated addition, finding consequent pairs of Fibonacci numbers (one of the most natural operations in our virtual machine) and factorial.
 
 # Rationale
 
