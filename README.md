@@ -8,7 +8,9 @@ The machine is Turing-complete, because it is easy to implement other instructio
 
 # Description
 
-The Nutes machine operates on either an infinite (theoretically) or circular memory tape divided into cells. Each cell contains a word of a certain number of trits, the ternary equivalent of bits. For example, each cell on a tape of a machine with the width of 3 may contain a number from -13 to +13 (from -3^2-3^1-3^0 to 3^2+3^1+3^0). The suggested bare minimal word width is 6 trits or a tryte, a group of 6 trits, like the minimal addressable memory unit in the original Russian machine. However, the length of machine words in Setun computers was 9 trits and its accumulator had 18 trits. 9 trits seems to be a somewhat practical minimum, 18 or 27 trits seem more suitable, and 36 trit words roughly correspond to today's 64-bit computers (36 trits are approximately 57 bits), while 48 trit words corespond to approximately 76 bits.
+The Nutes machine operates on either an infinite (theoretically) or circular memory tape divided into cells. Each cell contains a word of a certain number of trits, the ternary equivalent of bits. For example, each cell on a tape of a machine with the width of 3 may contain a number from -13 to +13 (from -3^2-3^1-3^0 to 3^2+3^1+3^0). The suggested bare minimal word width is 6 trits or a tryte, a group of 6 trits, like the minimal addressable memory unit in the original Russian machine. However, the length of machine words in Setun computers was 9 trits and its accumulator had 18 trits. 9 trits seems to be a somewhat practical minimum, 18 or 27 trits seem more suitable, and 36-trit words roughly correspond to today's 64-bit computers (36 trits are approximately 57 bits), while 48-trit words corespond to approximately 76 bits.
+
+After a series of practical experiments, the 36-trit was chosen as the most suitable, fitting nicely into 64-bit vectors. It also works well with the IO engine and other extensions (work in progress, yet to be defined). 
 
 The head of the machine reads the current cell and two other cells next to it on both sides of the tape:
 
@@ -35,6 +37,10 @@ Note that unlike SUBLEQ, another esoteric one instruction machine, which inspire
 The head reads two operand pointers, both located by -2 cells to the left of its current location. The sign sum of the operands, both being 1, is positive (1+1). The indirect branching pointer directs to the branching sequence of 20 18 0. Since the jump address for the positive case is 0 and the result of subtraction is 0, the machine halts:
 
 ..0 0 -2 4 -3 4 20 (Halted) 18 0
+
+# Current state
+
+A rudimentary interactive assembler indended to be used in REPL and a basic set of composed instructions, such as addition, subtraction, left shift (identical in balanced ternary to multiplication by 3), setting variables, comparison, swapping etc. allow to write simple programs. Examples include slow multiplication by repeated additions, Fibonacci numbers and factorial.
 
 # Rationale
 
