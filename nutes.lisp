@@ -94,8 +94,9 @@
    (not (listp prg))
 	(progn
 	  (setf list (append (program-data prg) (program-code prg)))
-	  (setf offset (program-first prg)))
-	(setf list prg))
+	  (setf (tape-position tape) offset)
+	  (setf offset (+ offset (program-first prg))))
+	  (setf list prg))
   (loop for p from 0 to (1- (length list))
      do (setf (elt (tape-vector tape)
 		   (mod (+ p offset) (tape-length tape)))
