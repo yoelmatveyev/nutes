@@ -1,16 +1,4 @@
-;; Structure for a rudimental assembler emulating a conventional computer
-
-(defstruct program
-  id
-  direction
-  entry
-  data
-  code
-  labels
-  first
-  last
-  length
-  )
+;;; Rudimentary assembler emulating a conventional computer
 
 ;; Checking whether an operand affects a jump or an instruction
 
