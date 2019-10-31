@@ -20,7 +20,7 @@ j- j0 j+
 
 The cells x and y contain pointers to two other cells, v1 and v2, which contain the actual operands. The pointers are relative to the current position of the machine head.
 
-The choice between the jumps is depending on the sum of signs of v1 and v2. The head jumps to j- number of cells, if the result is negative, to j+ number of cells, if the result is positive, or to j0 cells, if the result is zero. 
+The choice between the jumps depends on the sum of signs of v1 and v2. The head jumps to j- number of cells, if the result is negative, to j+ number of cells, if the result is positive, or to j0 cells, if the result is zero. 
 
 The computation continues until both j0 and v1-v2 are 0, in which case the machine halts.
 
