@@ -4,7 +4,7 @@ In 1959, a group of scientists at the Moscow State University developed the uniq
 
 Nutes (reverse of Setun) is a simple abstract machine, a ternary variety of a OISC (One Instruction Set Computer). Invented as a tribute to early Soviet computers,  this machine, also implementing an esoteric programming language, exhibits a number of unusual features, reminiscent of the Turing machines and cellular automata.
 
-The machine is Turing-complete, because it is easy to implement other instructions known to be sutiable for OISC designs by a simple sequence of operations, e.g. "subtract and branch if negative".
+The machine is Turing-complete, because it is easy to implement in it other instructions known to be sutiable for OISC designs by a simple sequence of operations, e.g. "subtract and branch if negative".
 
 # Description
 
@@ -26,13 +26,9 @@ The computation continues until both j0 and v1-v2 are 0, in which case the machi
 
 If the computation continues, the values of v1 and v2 are replaced, respectively, by v1-v2 and v2-v1.
 
-Note that unlike SUBLEQ, another esoteric one instruction machine, which also served as a source of inspiration for this project, branching in Nutes is decided **before** the subtraction. This allows to achieve the signwise symmetry explained below. 
-
-Also note that the original values of the operands are preserved in case of halting and may be reused for interrupts, IO and other extentions.
-
 # Examples:
 
-## 1. 
+## 1 
 
 ..1 1 -2 (Head)-> 4 -3 4 20 18 0
 
@@ -55,6 +51,14 @@ The sign sum is now negative. The result is exactly the same as above. The jump 
 This unusual symmetrical feature, much in the spirit of the general symmetrical nature of balanced ternary arithmetics, may help to understand better ternary programming and even, perhaps, to perform some automated code manipulatioms.
 
 # Remarks
+
+## 1
+
+Note that unlike SUBLEQ, another esoteric one instruction machine, which also served as a source of inspiration for this project, branching in Nutes is decided **before** the subtraction. This allows to achieve the signwise symmetry explained below. SUBLEQ is known to be a practical computation model. A generalized version of SUBLEQ is easy to emulate in Nutes, as shown in the file instructions.lisp in this project.
+
+Also note that the original values of the operands are preserved in case of halting and may be reused for interrupts, IO and other extentions.
+
+## 2
 
 If one wishes to switch the word width, use nutes-exp.lisp instead of nutes.lisp. However, it's highly recommended to use the current settings.
 
