@@ -18,13 +18,17 @@ The cell j contains a relative pointer to three other cells, which contain a ser
 
 j- j0 j+
 
-The choice between the jumps is depending on the sum of signs of x and y. The head jumps to j- number of cells, if the result is negative, to j+ number of cells, if the result is positive, or to j0 cells, if the result is zero. 
+The cells x and y contain pointers to two other cells, v1 and v2, which contain the actual operands. The pointers are relative to the current position of the machine head.
 
-The computation continues until both j0 and the new values of the operands (x-y) are 0, in which case the machine halts. The original value of x=y (they are equal) is output and may be used for some additional functionality, such as interrupts, I/O, interaction with an external math coprocessors, periperals etc.
+The choice between the jumps is depending on the sum of signs of v1 and v2. The head jumps to j- number of cells, if the result is negative, to j+ number of cells, if the result is positive, or to j0 cells, if the result is zero. 
 
-The cells x and y contain relative pointers to two other cells, which contain the operands. The value of those cells, v1 and v2, are replaced, respectively, by v1-v2 and v2-v1. 
+The computation continues until both j0 and v1-v2 are 0, in which case the machine halts.
 
-Note that unlike SUBLEQ, another esoteric one instruction machine, which inspired this project, branching in Nutes is decided **before** the subtraction. This allows to achieve the signwise symmetry explained below, as well to implement logic functions somewhat easier.
+If the computation continues, the values of v1 and v2 are replaced, respectively, by v1-v2 and v2-v1.
+
+Note that unlike SUBLEQ, another esoteric one instruction machine, which also served as a source of inspiration for this project, branching in Nutes is decided **before** the subtraction. This allows to achieve the signwise symmetry explained below. 
+
+Also note that the original values of the operands are preserved in case of halting and may be reused for interrupts, IO and other extentions.
 
 # Examples:
 
