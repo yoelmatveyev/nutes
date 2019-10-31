@@ -85,17 +85,17 @@
        (sub (coerce-width (- a+ a-)))
        (sign (sign-sum a+ a-)))
     (incf (tape-counter tape))
-    (setf (elt v (mod (+ p p+) l)) sub)
-    (setf (elt v (mod (+ p p-) l)) (- sub))
-    (case sign
-      (1 (setf (tape-position tape) (mod (+ p j+) l)))
-      (0 (setf (tape-position tape) (mod (+ p j0) l)))
-      (-1 (setf (tape-position tape) (mod (+ p j-) l))))
     (if (and (zerop j0) (zerop sub))
 	(progn (setf (tape-halted tape) t)
-	       (setf (tape-special tape) a+)
-	       )
-	t)))
+	       (setf (tape-special tape) a+))
+	(progn
+	  (case sign
+	    (1 (setf (tape-position tape) (mod (+ p j+) l)))
+	    (0 (setf (tape-position tape) (mod (+ p j0) l)))
+	    (-1 (setf (tape-position tape) (mod (+ p j-) l))))
+	    (setf (elt v (mod (+ p p+) l)) sub)
+	    (setf (elt v (mod (+ p p-) l)) (- sub))
+	    t))))
 
 ;; Write your program using the tools provides by the file insructions.lisp and feed it to the tape
 
