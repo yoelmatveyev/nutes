@@ -1,3 +1,36 @@
+;; Defining the main structures:
+
+; For the actual virtual machines
+; The 'special' field is reserved for IO and other later extensions
+
+(defstruct tape
+  position
+  initial
+  vector
+  length
+  halted
+  special
+  counter
+  )
+
+; For the assembled code
+
+(defstruct program
+  id
+  direction
+  entry
+  data
+  code
+  labels
+  first
+  last
+  length
+  )
+
+; Setting the word width of the machines
+
+(defvar width 36)
+
 (load "ternary-print.lisp")
 (load "input-output.lisp")
 (load "assembler.lisp")
@@ -13,8 +46,6 @@
   special
   counter
   )
-
-;; The 'special' field in tapes is reserved for IO and other later extensions
 
 (defun create-tape
     (length &optional (position 0) (counter 0))
