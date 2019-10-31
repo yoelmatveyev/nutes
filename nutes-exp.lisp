@@ -1,8 +1,7 @@
-(load "ternary-print.lisp")
-(load "input-output.lisp")
-(load "assembler.lisp")
-(load "instructions.lisp")
-(load "examples.lisp")
+;; Defining the main structures:
+
+; For the actual virtual machines
+; The 'special' field is reserved for IO and other later extensions
 
 (defstruct tape
   position
@@ -14,7 +13,30 @@
   counter
   )
 
-;; The 'special' field in tapes is reserved for IO and other later extensions
+; For the assembled code
+
+(defstruct program
+  id
+  direction
+  entry
+  data
+  code
+  labels
+  first
+  last
+  length
+  )
+
+;; Setting the word width of the machines
+;; Set your width of choice here
+
+(defparameter width 36)
+
+(load "ternary-print.lisp")
+(load "input-output.lisp")
+(load "assembler.lisp")
+(load "instructions.lisp")
+(load "examples.lisp")
 
 (defun create-tape
     (length &optional (position 0) (counter 0))
@@ -30,7 +52,6 @@
 ;; We convert integers to balanced ternary numbers of a given range
 ;; Set your own width here
 
-(defparameter width 36)
 (defparameter power (expt 3 width))
 (defparameter range (/ (1- power) 2))
 
