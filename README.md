@@ -60,11 +60,11 @@ Also note that the original values of the operands are preserved in case of halt
 
 ## 2
 
-If one wishes to switch the word width, use nutes-exp.lisp instead of nutes.lisp. However, it's highly recommended to use the current settings.
+If one wishes to switch the word width, use nutes-exp.lisp instead of nutes.lisp. However, it's highly recommended to use the current setting.
 
 The suggested bare minimal word width is 6 trits or a tryte, a group of 6 trits, like the minimal addressable memory unit in the original Russian machine. However, the length of machine words in Setun computers was 9 trits and its accumulator had 18 trits. 9 trits seems to be a somewhat practical minimum, 18 or 27 trits seem more suitable, and 36-trit words roughly correspond to today's 64-bit computers (36 trits are approximately 57 bits), while 48-trit words corespond to approximately 76 bits.
 
-After a series of practical experiments, the 36-trit has been chosen as the most suitable, fitting nicely into 64-bit vectors. It also works well with the IO engine and other future extensions (work in progress, yet to be defined in accordance of the direction/sign symmetry mentioned above and the principled lack of absolute addresses). 
+After a series of practical experiments, the 36-trit has been chosen as the most suitable, fitting nicely into 64-bit vectors. It also works well with the IO engine and other future extensions (work in progress, yet to be defined in accordance to the direction/sign symmetry explained above and the principled lack of absolute addresses). 
 
 # More about the balanced ternary
 
