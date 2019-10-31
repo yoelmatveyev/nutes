@@ -37,16 +37,6 @@
 (load "instructions.lisp")
 (load "examples.lisp")
 
-(defstruct tape
-  position
-  initial
-  vector
-  length
-  halted
-  special
-  counter
-  )
-
 (defun create-tape
     (length &optional (position 0) (counter 0))
 		   (make-tape
@@ -60,7 +50,6 @@
 
 ;; We convert integers to balanced ternary numbers of a given range
 
-(defvar width 36)
 (defvar power (expt 3 width))
 (defvar range (/ (1- power) 2))
 
