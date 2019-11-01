@@ -26,12 +26,12 @@
     (add-one-inst prg 'z3 'z3 :label next :jmp jmp)))
 
 ;; Factorial
-  
+
 (defun add-factorial (prg n res &key label (jmp (jmp+3 prg)))
   (let ((loop (gensym))(end (gensym))(next (gensym)))
   (add-var prg 'v=1 1)
   (add-set prg n res :label label) 
   (add-jmp prg n :jmp (list end end loop))
-  (add-smul prg n res :label loop :jmp next)
-  (add-jsub prg 'v=1 n :label next :jmp (list end end loop))
+  (add-jsub prg 'v=1 n :label loop :jmp (list end end next))
+  (add-smul prg n res :label next :jmp loop)
   (add-jmp prg 'z1 :label end :jmp jmp)))
