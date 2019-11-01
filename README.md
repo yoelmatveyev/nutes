@@ -66,6 +66,10 @@ The suggested bare minimal word width is 6 trits or a tryte, a group of 6 trits,
 
 After a series of practical experiments, the 36-trit has been chosen as the most suitable, fitting nicely into 64-bit vectors. It also works well with the IO engine and other future extensions (work in progress, yet to be defined in accordance to the direction/sign symmetry explained above and the principled lack of absolute addresses). 
 
+## Why not 40 trits?
+
+Although 40 trits ≈ 64.4 bits and fit almost perfectly into 64-bit arrays, the original creators of the ternary computers always used multiples and powers of 3 for their addressing and computation models. While 36 seems like a natural extension of the 18-trit accumulator of the original Soviet computers, 40-trit architecture seems unnatural and unaesthetic. Besides, Common Lisp works faster with 63-bit fixnums.
+
 # More about the balanced ternary
 
 https://en.wikipedia.org/wiki/Balanced_ternary
