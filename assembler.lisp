@@ -78,16 +78,33 @@
 	(- (program-first prg) 3))))
     jmpaddr))
 
+(defun label-value (prg value)
+  (let ((cadr (cadr (gethash value (program-labels prg)))))
+    (if (< cadr -1)
+	(nth (- cadr (program-first prg)) (program-data prg))
+	(nth (1+ cadr) (program-code prg)))))
+
 ;; Add a variable
 
-(defun add-var (prg label &optional (value 0))
-  (if (not (gethash label (program-labels prg)))
+(defun add-var (prg &optional label (value 0) (insert nil))
+  (if (symbolp value)
+      (setf value (label-value prg value)))
+  (if (or (not (gethash label (program-labels prg))) (eq label nil))
       (progn
-	(setf (program-data prg) (append (list value) (program-data prg)))
-	(setf (program-first prg) (1- (program-first prg)))
-	(setf (program-length prg) (1+ (program-length prg)))
-	(setf (gethash label (program-labels prg))
-	      (list 'var (program-first prg))))))
+	(if insert
+	  (progn
+	    (setf (program-code prg) (append (program-code prg)(list value)))
+	    (setf (program-last prg) (1+ (program-last prg))))
+	  (progn
+	    (setf (program-data prg) (append (list value) (program-data prg)))
+	    (setf (program-first prg) (1- (program-first prg)))))
+ 	(if (and label (not (eq label 'nil)))
+	    (setf (gethash label (program-labels prg))
+		  (list 'var (if insert
+				 (program-last prg)
+				 (program-first prg)))))
+	(setf (program-length prg) (1+ (program-length prg)))))
+	label)
 
 ;; Set an existing variable
 
@@ -159,7 +176,7 @@
     (prg a b &key
 	       (jmp (jmp+3 prg))
 	       (forbid '('op-modif 'jmp-addr-modif))
-	       label jlabel)
+	       label jlabel zero)
   (let* ((addr (+ (program-last prg) 2))
 	 (newjmp)
 	 (abs-jump nil)
@@ -167,10 +184,10 @@
 	 (jlabel-existed nil)
 	 (jmp+3 (jmp+3 prg)))
     (if (and (symbolp a) (not (gethash a (program-labels prg))))
-	(add-var prg a))
+	      (add-var prg a))
     (setf a (find-addr prg a))
     (if (and (symbolp b) (not (gethash b (program-labels prg))))
-	(add-var prg b))
+	      (add-var prg b))
     (setf b (find-addr prg b))
     (if (gethash jlabel (program-labels prg)) (setf jlabel-existed t))
   (if (not (eql jmp jmp+3))
@@ -184,18 +201,24 @@
 	(progn
 	  (setf (program-code prg) (append (program-code prg) '(0 0 0)))
 	  (if label (chk-label prg label addr newjmp))
+	  (if (eq label jmp) (setf zero t))
 	  (setf jmp (chk-jmp prg jmp addr))
           (if (or (symbolp jmp)(numberp jmp))
-	      (setf jmp (make-list 3 :initial-element (find-addr prg jmp)))
-	      (setf jmp (mapcar (lambda (_) (find-addr prg _)) jmp)))
-	  (setf jmp
-		(- (if jlabel
-		       (if
-			(setf abs-jump (add-3jmp prg addr jmp :label jlabel :ignore nj3))
-			abs-jump
-			(caddr (gethash jlabel (program-labels prg))))
-	               (add-3jmp prg addr jmp :ignore nj3))
-      		   addr))
+	    	  (setf jmp (make-list 3 :initial-element (find-addr prg jmp)))
+		  (setf jmp (mapcar (lambda (_) (find-addr prg _)) jmp)))
+	  (if zero
+	      (progn
+		(setf (cadr inst) 0)
+		(setf (gethash label (program-labels prg))
+		      (list 'inst addr addr)))
+	      (setf jmp
+		    (- (if jlabel
+			   (if
+			    (setf abs-jump (add-3jmp prg addr jmp :label jlabel :ignore nj3))
+			    abs-jump
+			    (caddr (gethash jlabel (program-labels prg))))
+			   (add-3jmp prg addr jmp :ignore nj3))
+      		       addr)))
 	  (loop for n from 0 to 2 do
 	       (let ((length (length (program-code prg))))
 		 (setf (nth (+ length n -3) (program-code prg)) (nth n inst)))) 
@@ -203,9 +226,33 @@
 	  (setf (program-length prg)
 		(- (program-last prg)(program-first prg) -1)))))))
 
+;; Add variables for an IO environment
+
+(defun add-io (prg jmp op1 op2 opcode &key label)
+  (let ((code (op-gen #(3 4 5 6)))
+	(last (+ (program-last prg) 2)))
+    (add-one-inst prg (+ last 2) (+ last 2) :zero t :label label)
+    (add-var prg nil code :insert)
+    (add-var prg nil (- (find-addr prg jmp) last) :insert)
+    (add-var prg nil (- (find-addr prg op1) last) :insert)
+    (add-var prg nil (- (find-addr prg op2) last) :insert)
+    (add-var prg nil (if (symbolp opcode) (label-value prg opcode) opcode) :insert)))
+
+;; List all labels
+
+(defun list-labels (prg)
+  (loop for a being each hash-key of
+       (program-labels prg) using (hash-value v) do
+       (format t "~a->~a~&" a v)
+       (if (eq (car v) '?)
+	   (loop for a2 being each hash-key of
+		(cadr v) using (hash-value v2) do
+		(format t "  ~a->~a~&" a2 v2)))))
+
+
 ;; Create anonymous programs with the common +3 unconditional jump preset 
 
-(defun make-prg ()
+(defun create-prg ()
   (let ((prg
 	 (make-program :direction 1
 		       :first -1
