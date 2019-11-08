@@ -116,7 +116,7 @@
      (4 (print n)))
    nil)
 
-(load "lisp/nutes/opcodes.lisp")
+(load "opcodes.lisp")
 
 (defun run-io-engine (tape)
   (let* ((length (tape-length tape))
