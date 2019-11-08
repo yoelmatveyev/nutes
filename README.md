@@ -22,7 +22,9 @@ The cells x and y contain pointers to two other cells, v1 and v2, which contain 
 
 The choice between the jumps depends on the sum of signs of v1 and v2. The head jumps to j- number of cells, if the result is negative, to j+ number of cells, if the result is positive, or to j0 cells, if the result is zero. 
 
-The computation continues until both j0 and v1-v2 are 0, in which case the machine halts.
+The computation continues until both j0 and v1-v2 are 0, in which case the machine interrupts and passes the original value of the operands to the external interrupt and IO engine, which can only use adressed relative to the current position of the tape head. The value of the operand is split into 4 9-trits words, which point to four addresses, which contain the next jump address, two actual addresses of the IO angine operands and the opcode. The opcode is further split into 4 9-trit words: Flags, opcode and two additional parameters.
+
+All operations of the external engine must preserve the sign/direction symmetry explained below. The tape halts, if the flags or the opcode is 0.
 
 If the computation continues, the values of v1 and v2 are replaced, respectively, by v1-v2 and v2-v1.
 
@@ -36,9 +38,11 @@ The head reads two operand pointers, both located by -2 cells to the left of its
 
 ..0 0 -2 4 -3 4 20 (Halted) 18 0
 
-# Current state
+# Assember and IO engine
 
-A rudimentary interactive assembler indended to be used in REPL and a basic set of composed instructions, such as addition, subtraction, left shift (identical in balanced ternary to multiplication by 3), setting variables, comparison, swapping etc. allow to write simple programs. Examples include slow multiplication by repeated addition, finding consequent pairs of Fibonacci numbers (one of the most natural operations in our virtual machine) and factorial.
+A rudimentary interactive assembler indended to be used in REPL and a basic set of composed instructions, such as addition, subtraction, left shift (identical in balanced ternary to multiplication by 3), setting variables, comparison, swapping etc. allow to write simple programs. Two opcodes with two flags are currently defined for the IO engine, enabling alphanumeric, ternary, base-9. base-27 and decimal input and output for 1 or 2 operands.
+
+Examples include slow multiplication by repeated addition, finding consequent pairs of Fibonacci numbers (one of the most natural operations in our virtual machine), factorial and basic input (up to 6 characters) combined with "Hello World".
 
 # Rationale
 
@@ -64,7 +68,7 @@ If one wishes to switch the word width, use nutes-exp.lisp instead of nutes.lisp
 
 The suggested bare minimal word width is 6 trits or a tryte, a group of 6 trits, like the minimal addressable memory unit in the original Soviet machine. However, the length of machine words in Setun computers was 9 trits and its accumulator had 18 trits. 9 trits seems to be a somewhat practical minimum, 18 or 27 trits seem more suitable, and 36-trit words roughly correspond to today's 64-bit computers (36 trits are approximately 57 bits), while 48-trit words corespond to approximately 76 bits.
 
-After a series of practical experiments, the 36-trit has been chosen as the most suitable, fitting nicely into 64-bit vectors. It also works well with the IO engine and other future extensions (work in progress, yet to be defined in accordance to the direction/sign symmetry explained above and the principled lack of absolute addresses). 
+After a series of practical experiments, the 36-trit has been chosen as the most suitable, fitting nicely into 64-bit vectors. It also works well with the IO engine and other future extensions (work in progress, every detail of it must be defined in accordance to the direction/sign symmetry explained above and the principled lack of absolute addresses). 
 
 ## Why not 40 trits?
 
