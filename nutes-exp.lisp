@@ -32,11 +32,11 @@
 
 (defparameter width 36)
 
-(load "lisp/nutes/ternary-print.lisp")
-(load "lisp/nutes/input-output.lisp")
-(load "lisp/nutes/assembler.lisp")
-(load "lisp/nutes/instructions.lisp")
-(load "lisp/nutes/examples.lisp")
+(load "ternary-print.lisp")
+(load "input-output.lisp")
+(load "assembler.lisp")
+(load "instructions.lisp")
+(load "examples.lisp")
 
 ;; The 'special' field in tapes is reserved for IO and other later extensions
 
