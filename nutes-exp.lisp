@@ -1,7 +1,7 @@
 ;; Defining the main structures:
 
 ; For the actual virtual machines
-; The 'special' field is reserved for IO and other later extensions
+; The 'special' field is for interrupts, IO and later extensions
 
 (defstruct tape
   position
