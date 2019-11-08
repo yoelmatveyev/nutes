@@ -32,11 +32,13 @@
 
 (defparameter width 36)
 
-(load "ternary-print.lisp")
-(load "input-output.lisp")
-(load "assembler.lisp")
-(load "instructions.lisp")
-(load "examples.lisp")
+(load "lisp/nutes/ternary-print.lisp")
+(load "lisp/nutes/input-output.lisp")
+(load "lisp/nutes/assembler.lisp")
+(load "lisp/nutes/instructions.lisp")
+(load "lisp/nutes/examples.lisp")
+
+;; The 'special' field in tapes is reserved for IO and other later extensions
 
 (defun create-tape
     (length &optional (position 0) (counter 0))
@@ -50,7 +52,6 @@
 		    :counter counter))
 
 ;; We convert integers to balanced ternary numbers of a given range
-;; Set your own width here
 
 (defparameter power (expt 3 width))
 (defparameter range (/ (1- power) 2))
@@ -87,7 +88,8 @@
     (incf (tape-counter tape))
     (if (and (zerop j0) (zerop sub))
 	(progn (setf (tape-halted tape) t)
-	       (setf (tape-special tape) a+))
+	       (setf (tape-special tape) a+)
+	       (input-output tape))
 	(progn
 	  (case sign
 	    (1 (setf (tape-position tape) (mod (+ p j+) l)))
@@ -96,6 +98,7 @@
 	    (setf (elt v (mod (+ p p+) l)) sub)
 	    (setf (elt v (mod (+ p p-) l)) (- sub))
 	    t))))
+
 
 ;; Write your program using the tools provides by the file insructions.lisp and feed it to the tape
 

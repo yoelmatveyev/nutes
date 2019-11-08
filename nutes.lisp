@@ -31,11 +31,11 @@
 
 (defvar width 36)
 
-(load "ternary-print.lisp")
-(load "input-output.lisp")
-(load "assembler.lisp")
-(load "instructions.lisp")
-(load "examples.lisp")
+(load "lisp/nutes/ternary-print.lisp")
+(load "lisp/nutes/input-output.lisp")
+(load "lisp/nutes/assembler.lisp")
+(load "lisp/nutes/instructions.lisp")
+(load "lisp/nutes/examples.lisp")
 
 (defun create-tape
     (length &optional (position 0) (counter 0))
@@ -97,7 +97,8 @@
     (incf (tape-counter tape))
     (if (and (zerop j0) (zerop sub))
 	(progn (setf (tape-halted tape) t)
-	       (setf (tape-special tape) a+))
+	       (setf (tape-special tape) a+)
+	       (input-output tape))
 	(progn
 	  (case sign
 	    (1 (setf (tape-position tape) (mod (+ p j+) l)))
