@@ -40,7 +40,7 @@ The head reads two operand pointers, both located by -2 cells to the left of its
 
 # Assember and IO engine
 
-A rudimentary interactive assembler indended to be used in REPL and a basic set of composed instructions, such as addition, subtraction, left shift (identical in balanced ternary to multiplication by 3), setting variables, comparison, swapping etc. allows to write simple programs. Two opcodes with two flags are currently defined for the IO engine, enabling alphanumeric, ternary, base-9. base-27 and decimal input and output for 1 or 2 operands.
+A rudimentary interactive assembler indended to be used in REPL and a basic set of composed instructions, such as addition, subtraction, left shift (identical in balanced ternary to multiplication by 3), setting variables, comparison, swapping etc. allows to write simple programs. Two opcodes with three flags (not counting the generic direction flag that ensures sign/direction symmetry) are currently defined for the IO engine, enabling alphanumeric, ternary, base-9. base-27 and decimal input and output for 1 or 2 operands.
 
 Examples include slow multiplication by repeated addition, finding consequent pairs of Fibonacci numbers (one of the most natural operations in our virtual machine), factorial and basic input (up to 6 characters) combined with "Hello World".
 
