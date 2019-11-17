@@ -40,11 +40,11 @@ Practical code examples include slow multiplication by repeated addition, findin
 
 ## Tape
 
-..1 1 -2 (Head)-> 4 -3 4 20 18 0
+..1 1 -2 Head-> 4 -3 4 20 18 0
 
 The head reads two operand pointers, both located by -2 cells to the left of its current location. The sign sum of the operands, both being 1, is positive (1+1). The indirect branching pointer directs to the branching sequence of 20 18 0. Since the jump address for the positive case is 0 and the result of subtraction is 0, the machine halts:
 
-..0 0 -2 4 -3 -> 4 (Halted) 20 18 0
+..0 0 -2 4 -3 Head(halted)-> 4 20 18 0
 
 ## IO
 
