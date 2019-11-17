@@ -40,7 +40,9 @@ The head reads two operand pointers, both located by -2 cells to the left of its
 
 # Assember and IO engine
 
-A rudimentary interactive assembler indended to be used in REPL and a basic set of composed instructions, such as addition, subtraction, left shift (identical in balanced ternary to multiplication by 3), setting variables, comparison, swapping etc. allows to write simple programs. Two opcodes with three flags (not counting the generic direction flag that ensures sign/direction symmetry) are currently defined for the IO engine, enabling alphanumeric, ternary, base-9. base-27 and decimal input and output for 1 or 2 operands.
+Tapes may be programmed by the rather promitime, but operational interactive assembler indended to be used in REPL and a basic set of composed instructions, such as addition, subtraction, left shift (identical in balanced ternary to multiplication by 3), setting variables, comparison, swapping etc.
+
+Two opcodes with three flags (not counting the generic direction hightest trit flag that ensures sign/direction symmetry) are currently defined for the IO engine, enabling alphanumeric, ternary, base-9. base-27 and decimal input and output for 1 or 2 operands.
 
 Examples include slow multiplication by repeated addition, finding consequent pairs of Fibonacci numbers (one of the most natural operations in our virtual machine), factorial and basic input (up to 6 characters) combined with "Hello World".
 
@@ -54,25 +56,23 @@ The sign sum is now negative. The result is exactly the same as above. The jump 
 
 This unusual symmetrical feature, much in the spirit of the general symmetrical nature of balanced ternary arithmetics, may help to understand better ternary programming and even, perhaps, to perform some automated code manipulatioms.
 
-# Remarks
+# Notes
 
 ## 1
 
-Note that unlike SUBLEQ, another esoteric one instruction machine, which also served as a source of inspiration for this project, branching in Nutes is decided **before** the subtraction. This allows to achieve the signwise symmetry explained below. SUBLEQ is known to be a practical computation model. A generalized version of SUBLEQ is easy to emulate in Nutes, as shown in the file instructions.lisp in this project.
+Unlike SUBLEQ, another esoteric one instruction machine, which also served as a source of inspiration for this project, branching in Nutes is decided **before** the subtraction. This allows to achieve the signwise symmetry explained below. SUBLEQ is known to be a practical computation model. A generalized version of SUBLEQ is easy to emulate in Nutes, as shown in the file instructions.lisp in this project.
 
 Also note that the original values of the operands are preserved in case of halting and may be reused for interrupts, IO and other extentions.
 
 ## 2
 
-If one wishes to switch the word width, use nutes-exp.lisp instead of nutes.lisp. However, it's highly recommended to use the current setting.
+Although 40 trits ≈ 63.4 bits and fit almost perfectly into 64-bit arrays, the original creators of the ternary computers always used multiples and powers of 3 for their addressing and computation models.
 
-The suggested bare minimal word width is 6 trits or a tryte, a group of 6 trits, like the minimal addressable memory unit in the original Soviet machine. However, the length of machine words in Setun computers was 9 trits and its accumulator had 18 trits. 9 trits seems to be a somewhat practical minimum, 18 or 27 trits seem more suitable, and 36-trit words roughly correspond to today's 64-bit computers (36 trits are approximately 57 bits), while 48-trit words corespond to approximately 76 bits.
+After a series of practical experiments, the 36-trit has been chosen as the most suitable, fitting nicely into 64-bit vectors. It works well with the IO engine and may work well with other future extensions (work in progress, every detail of it must be defined in accordance to the direction/sign symmetry explained above and the principled lack of absolute addresses). 36 seems like a natural extension of the 18-trit accumulator of the original Soviet computers. Besides the aesthetic reason, Common Lisp (at least SBCL) works significantly faster with 63-bit fixnums rather than '(signed-byte 64).
 
-After a series of practical experiments, the 36-trit has been chosen as the most suitable, fitting nicely into 64-bit vectors. It also works well with the IO engine and other future extensions (work in progress, every detail of it must be defined in accordance to the direction/sign symmetry explained above and the principled lack of absolute addresses). 
+The IO engine currently supports only 36-wide word tapes, which are optimized by default as fixnum vectors. If the tape width is different from 36, all interrupts are simply handled as halting signals.
 
-## Why not 40 trits?
-
-Although 40 trits ≈ 63.4 bits and fit almost perfectly into 64-bit arrays, the original creators of the ternary computers always used multiples and powers of 3 for their addressing and computation models. While 36 seems like a natural extension of the 18-trit accumulator of the original Soviet computers, 40-trit architecture seems unnatural and unaesthetic. Besides, Common Lisp (at least SBCL) works significantly faster with 63-bit fixnums rather than '(signed-byte 64).
+If one wishes to experiment with tapes of other width, the suggested bare mimimum is 6 trits or a tryte, a group of 6 trits, like the minimal addressable memory unit in the original Soviet machine. However, the length of machine words in Setun computers was 9 trits and its accumulator had 18 trits. 9 trits seems to be a somewhat practical minimum, 18 or 27 trits seem more suitable. 36-trit words roughly correspond to today's 64-bit computers (36 trits are approximately 57 bits), while 48-trit words corespond to approximately 76 bits.
 
 # More about the balanced ternary
 
