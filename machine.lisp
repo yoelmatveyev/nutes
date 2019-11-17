@@ -68,7 +68,7 @@
 (defun coerce-width (x &key (width st-width))
   (let*
       ((power (expt 3 width))
-       (range (/ (1- power) 3))
+       (range (/ (1- power) 2))
        (n (mod x power)))
     (if (> n range)
 	(- n power) n)))
