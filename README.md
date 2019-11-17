@@ -38,13 +38,22 @@ Practical code examples include slow multiplication by repeated addition, findin
 
 # Examples:
 
-## 1 
+## Tape
 
 ..1 1 -2 (Head)-> 4 -3 4 20 18 0
 
 The head reads two operand pointers, both located by -2 cells to the left of its current location. The sign sum of the operands, both being 1, is positive (1+1). The indirect branching pointer directs to the branching sequence of 20 18 0. Since the jump address for the positive case is 0 and the result of subtraction is 0, the machine halts:
 
-..0 0 -2 4 -3 4 20 (Halted) 18 0
+..0 0 -2 4 -3 -> 4 (Halted) 20 18 0
+
+## IO
+
+If 003004005006 in balanced 27-base (subtracted by itself with the jump address in case of 0 set to 0, thus causing a halting condition) is passed to the IO engine (the word width must be 36), it's decoded to 4 addresses (3 4 5 6) relative to the current position of the tape head. These addresses, which in this case follow immediatedly the instruction that caused the interrupt, contain the next jump, two operands and the opcode.
+
+If the opcode word is set to C00001000000 (balanced 27-base), it's split into the flags, operation code and two optional arguments (900 001 000 000). COO is 110000000 in balanced 3-base. The first three trits are decoded as the direction flag, the operand mode flag and the operation mode flag. The direction flags indicates that the rest of the opcode must be negated, thus ensuring the signwise symmetry, if the code is negated and inverted. The mode trit indicates, which operands are used. The operation code -1 is for the first opeand, 0 for both and 1 for the second operan. The operation code 0 is for alphanumeric output (1, 2 ,3 4 are respectively is balanced 3, 9, 27 and decimal).
+
+If the operands decode into 6-tryte strings "Hello," and "World!", the engine outputs both strings and continues running the tape from the next jump address.
+
 
 # Rationale
 
