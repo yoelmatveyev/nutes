@@ -1,3 +1,5 @@
+(in-package :cl-nutes)
+
 ;; A couple of simple functions to represent numbers in balanced 3, 9 and 27 base.
 ;; Requires Unicode, because negative digits are overlined (perfectly works in Emacs)  
 
@@ -52,5 +54,5 @@
 
 ;; Print a number in 3,9 or 27 balanced base
 
-(defun ternary-print (n &key (b 27) (l nil))
-  (format t "~a" (ternary-string n :b b :l l)))
+(defun ternary-print (n &key (b 27) (l nil) (stream t))
+  (format stream "~a" (ternary-string n :b b :l l)))

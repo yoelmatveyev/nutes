@@ -1,80 +1,74 @@
+(in-package :cl-nutes)
+
 ;; Some common composed instructions 
 
 ;; Note that this subtraction can be used with all possible combinations of sign-based branches, including the Subleq known to be Turing-complete
 
-; jmp (sign (b=b-a))
+; jmp (-(b=b-a))
 
-(defun add-jsub (prg a b &key label (jlabel nil) (jmp (jmp+3 prg)))
-  (add-one-inst prg a 'z1 :label label)
-  (add-one-inst prg 'z1 'z2)
-  (add-one-inst prg 'z1 'z1)
-  (add-one-inst prg b 'z2)
-  (add-one-inst prg 'z1 'z2); These two instructions could be removed,
-  (add-one-inst prg 'z2 'z2); but the jump would then be according to the sign of -(b-a)
-  (add-one-inst prg 'z1 'z1 :jmp jmp :jlabel jlabel))
+(defun prg-sub (prg a b &key label jlabel (jmp (jmp+3 prg)))
+  (prg-- prg a 'z1 :label label)
+  (prg-- prg 'z1 'z2)
+  (prg-- prg 'z1 'z1)
+  (prg-- prg b 'z2)
+  (prg-- prg 'z2 'z2 :jmp jmp :jlabel jlabel))
 
-; jmp (sign (b=b+a))
+; jmp (-(b=b+a))
 
-(defun add-jadd (prg a b &key label (jlabel nil) (jmp (jmp+3 prg)))
-  (add-one-inst prg a 'z1 :label label)
-  (add-one-inst prg b 'z1)
-  (add-one-inst prg 'z1 'z2)
-  (add-one-inst prg 'z1 'z1)
-  (add-one-inst prg 'z2 'z2 :jmp jmp :jlabel jlabel))
+(defun prg-add (prg a b &key label jlabel (jmp (jmp+3 prg)))
+  (prg-- prg a 'z1 :label label)
+  (prg-- prg b 'z1)
+  (prg-- prg 'z1 'z1 :jmp jmp :jlabel jlabel))
 
-; jmp (sign (a))
+; jmp (-a)
 
-(defun add-jmp (prg a &key label (jlabel nil) (jmp (jmp+3 prg)))
-  (add-one-inst prg a 'z1 :label label)
-  (add-one-inst prg 'z1 'z2)
-  (add-one-inst prg 'z1 'z1)
-  (add-one-inst prg 'z2 'z2 :jmp jmp :jlabel jlabel))
+(defun prg-jmp (prg a &key label jlabel (jmp (jmp+3 prg)))
+  (prg-- prg a 'z1 :label label)
+  (prg-- prg 'z1 'z1 :jmp jmp :jlabel jlabel))
 
-; b=a
+; jmp(-(b=a))
 
-(defun add-set (prg a b &key label)
-  (add-one-inst prg a 'z1 :label label)
-  (add-one-inst prg b b)
-  (add-one-inst prg 'z1 b)
-  (add-one-inst prg 'z1 'z1))
+(defun prg-mov (prg a b &key label jlabel (jmp (jmp+3 prg)))
+  (prg-- prg a 'z1 :label label)
+  (prg-- prg b b)
+  (prg-- prg 'z1 b)
+  (prg-- prg 'z1 'z1 :jmp jmp :jlabel jlabel))
 
 ; swap(a,b)
 
-(defun add-swap (prg a b &key label)
-  (add-one-inst prg a 'z1 :label label)
-  (add-one-inst prg b 'z2)
-  (add-one-inst prg b b)
-  (add-one-inst prg b 'z1)
-  (add-one-inst prg a a)
-  (add-one-inst prg b b)
-  (add-one-inst prg a 'z2)
-  (add-one-inst prg 'z1 'z1)
-  (add-one-inst prg 'z2 'z2))
+(defun prg-swap (prg a b &key label)
+  (prg-- prg a 'z1 :label label)
+  (prg-- prg b 'z2)
+  (prg-- prg b b)
+  (prg-- prg b 'z1)
+  (prg-- prg a a)
+  (prg-- prg a 'z2)
+  (prg-- prg 'z1 'z1)
+  (prg-- prg 'z2 'z2))
 
-; a=a*2
+; jmp(-(a=a*2))
 
-(defun add-2a (prg a &key label)
-  (add-one-inst prg a 'z1 :label label)
-  (add-one-inst prg a 'z1)
-  (add-one-inst prg 'z1 'z1))
+(defun prg-2a (prg a &key label jlabel (jmp (jmp+3 prg)))
+  (prg-- prg a 'z1 :label label)
+  (prg-- prg a 'z1)
+  (prg-- prg 'z1 'z1 :jmp jmp :jlabel jlabel))
 
-; a=a*3
+; jmp(-(a=a*3))
 
-(defun add-3a (prg a &key label)
-  (add-one-inst prg a 'z1 :label label)
-  (add-one-inst prg 'z1 'z2)
-  (add-one-inst prg 'z1 'z2)
-  (add-one-inst prg a 'z1)
-  (add-one-inst prg 'z1 'z1)
-  (add-one-inst prg 'z2 'z2))
+(defun prg-3a (prg a &key label jlabel (jmp (jmp+3 prg)))
+  (prg-- prg a 'z1 :label label)
+  (prg-- prg 'z1 'z2)
+  (prg-- prg 'z1 'z2)
+  (prg-- prg a 'z1)
+  (prg-- prg 'z2 'z2)
+  (prg-- prg 'z1 'z1 :jmp jmp :jlabel jlabel))
 
-; jmp (sign (b-a))
+; jmp(b-a)
 
-(defun add-cmp (prg a b &key label (jlabel nil) (jmp (jmp+3 prg)))
-  (add-one-inst prg a 'z1 :label label)
-  (add-one-inst prg b 'z2)
-  (add-one-inst prg 'z3 b)
-  (add-one-inst prg 'z1 'z2)
-  (add-one-inst prg 'z2 'z2)
-  (add-one-inst prg 'z1 'z1 :jmp jmp :jlabel jlabel))
+(defun prg-cmp (prg a b &key label (jlabel nil) (jmp (jmp+3 prg)))
+  (prg-- prg a 'z1 :label label)
+  (prg-- prg b 'z2)
+  (prg-- prg 'z1 'z2)
+  (prg-- prg 'z2 'z2)
+  (prg-- prg 'z1 'z1 :jmp jmp :jlabel jlabel))
 

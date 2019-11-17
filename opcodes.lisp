@@ -1,4 +1,4 @@
-(load "lisp/nutes/assembler.lisp")
+(in-package :cl-nutes)
 
 ;; Process opcodes
 
