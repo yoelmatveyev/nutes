@@ -30,7 +30,7 @@ If the computation continues, the values of v1 and v2 are replaced, respectively
 
 # Assember and IO engine
 
-Tapes may be programmed by the rather promitime, but operational interactive assembler indended to be used in REPL and a basic set of composed instructions, such as addition, subtraction, left shift (identical in balanced ternary to multiplication by 3), setting variables, comparison, swapping etc.
+Tapes may be programmed by a simple interactive assembler, indended to be used in REPL, and a basic set of composed instructions, such as addition, subtraction, left shift (identical in balanced ternary to multiplication by 3), moving, comparison, swapping etc.
 
 Two opcodes with three flags (not counting the generic direction hightest trit flag that ensures sign/direction symmetry) are currently defined for the IO engine, enabling alphanumeric, ternary, base-9. base-27 and decimal input and output for 1 or 2 operands.
 
