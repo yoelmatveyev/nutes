@@ -24,9 +24,17 @@ The choice between the jumps depends on the sum of signs of v1 and v2. The head 
 
 The computation continues until both j0 and v1-v2 are 0, in which case the machine interrupts and passes the original value of the operands to the external interrupt and IO engine, which can only use adressed relative to the current position of the tape head. The value of the operand is split into 4 9-trits words, which point to four addresses, which contain the next jump address, two actual addresses of the IO angine operands and the opcode. The opcode is further split into 4 9-trit words: Flags, opcode and two additional parameters.
 
-All operations of the external engine must preserve the sign/direction symmetry explained below. The tape halts, if the flags or the opcode is 0.
+All operations of the external engine must preserve the sign/direction symmetry explained below. The tape halts, if the flags or the opcode is 0. Currently, the IO engine only works with 36-wide tapes.
 
 If the computation continues, the values of v1 and v2 are replaced, respectively, by v1-v2 and v2-v1.
+
+# Assember and IO engine
+
+Tapes may be programmed by the rather promitime, but operational interactive assembler indended to be used in REPL and a basic set of composed instructions, such as addition, subtraction, left shift (identical in balanced ternary to multiplication by 3), setting variables, comparison, swapping etc.
+
+Two opcodes with three flags (not counting the generic direction hightest trit flag that ensures sign/direction symmetry) are currently defined for the IO engine, enabling alphanumeric, ternary, base-9. base-27 and decimal input and output for 1 or 2 operands.
+
+Practical code examples include slow multiplication by repeated addition, finding consequent pairs of Fibonacci numbers (one of the most natural operations in our virtual machine), factorial and basic input (up to 6 characters) combined with "Hello World".
 
 # Examples:
 
@@ -37,14 +45,6 @@ If the computation continues, the values of v1 and v2 are replaced, respectively
 The head reads two operand pointers, both located by -2 cells to the left of its current location. The sign sum of the operands, both being 1, is positive (1+1). The indirect branching pointer directs to the branching sequence of 20 18 0. Since the jump address for the positive case is 0 and the result of subtraction is 0, the machine halts:
 
 ..0 0 -2 4 -3 4 20 (Halted) 18 0
-
-# Assember and IO engine
-
-Tapes may be programmed by the rather promitime, but operational interactive assembler indended to be used in REPL and a basic set of composed instructions, such as addition, subtraction, left shift (identical in balanced ternary to multiplication by 3), setting variables, comparison, swapping etc.
-
-Two opcodes with three flags (not counting the generic direction hightest trit flag that ensures sign/direction symmetry) are currently defined for the IO engine, enabling alphanumeric, ternary, base-9. base-27 and decimal input and output for 1 or 2 operands.
-
-Examples include slow multiplication by repeated addition, finding consequent pairs of Fibonacci numbers (one of the most natural operations in our virtual machine), factorial and basic input (up to 6 characters) combined with "Hello World".
 
 # Rationale
 
