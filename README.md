@@ -22,7 +22,7 @@ The cells x and y contain pointers to two other cells, v1 and v2, which contain 
 
 The choice between the jumps depends on the sum of signs of v1 and v2. The head jumps to j- number of cells, if the result is negative, to j+ number of cells, if the result is positive, or to j0 cells, if the result is zero. 
 
-The computation continues until both j0 and v1-v2 are 0, in which case the machine interrupts and passes the original value of the operands to the external interrupt and IO engine, which can only use adressed relative to the current position of the tape head. The value of the operand is split into 4 9-trits words, which point to four addresses, which contain the next jump address, two actual addresses of the IO engine operands and the opcode. The opcode is further split into 4 9-trit words: Flags, opcode and two additional parameters. The IO engine is still experimental and may be completely redefined in the future.
+The computation continues until both j0 and v1-v2 are 0, in which case the machine interrupts and passes the original value of the operands to the external interrupt and IO engine, which can only use adressed relative to the current position of the tape head. The value of the operand is split into 4 9-trits words, which point to four addresses, which contain the next jump address, two actual addresses of the IO engine operands and the opcode. The opcode is further split into 4 9-trit words: Flags, opcode and two additional parameters. The IO engine is still experimental and may be redefined in the future.
 
 All operations of the external engine must preserve the sign/direction symmetry explained below. The tape halts, if the flags or the opcode is 0. Currently, the IO engine only works with 36-wide tapes.
 
@@ -48,7 +48,7 @@ The head reads two operand pointers, both located by -2 cells to the left of its
 
 ## IO
 
-**Note that the current primitive IO engine, being a supplement to the machine itself, is an experimental work in progress. If a better practical model will be found, the engine's definitions may be changed entirely.**
+**Note that the current primitive IO engine, being a supplement to the machine itself, is an experimental work in progress. If a better practical model will be found, the engine's definitions may be changed substantially, although the basic concepts will probably remain the same.**
 
 If 003004005006 in balanced 27-base (subtracted by itself with the jump address in case of 0 set to 0, thus causing a halting condition) is passed to the IO engine (the word width must be 36), it's decoded to 4 addresses (3 4 5 6) relative to the current position of the tape head. These addresses, which in this case follow immediatedly the instruction that caused the interrupt, contain the next jump, two operands and the opcode.
 
