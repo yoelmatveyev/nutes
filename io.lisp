@@ -8,80 +8,61 @@
 
 ;; Decode and encode operands for an interrupt
 
-(defun op-split (n)
-      (coerce (3n-digits n :b op-pointer :l 4) 'vector))
+(defun op-split (n &key (width 36))
+  (when (<= width 3) (setf width 3)) 
+  (coerce (3n-digits n :b (expt 3 (floor width 3)) :l 3) 'vector))
 
-(defun op-gen (x &key (b op-pointer))
-  (unless b (setf b (expt 3 b))) (reduce
-   (lambda (h l)(+ (* h b) l)) 
-   (coerce x 'list)))
+(defun op-gen (x &key (width 36))
+  (let* ((w (floor width 3))
+	 (b (expt 3 w)))
+    (setf x (mapcar (lambda (_) (coerce-width _ :width w)) x)) 
+    (reduce (lambda (h l)(+ (* h b) l)) 
+	    (coerce x 'list))))
 
-;; Decode and encode strings up to 6 characters
+;; Decode and encode strings of trytes
 
-(defun 36-char (n)
+(defun trytes-chars (n)
       (let ((str)
-	    (d (3n-split n 3^6)))
-	(loop for x from 0 to 5 do
+	    (d (3n-split n :b 3^6)))
+	(loop for x from 0 to (1- (length d)) do
 	     (if (nth x d)
 		 (progn
 		   (push (code-char (abs (nth x d))) str)
 		   (if (< (nth x d) 0)(push (code-char #x0305) str)))))
       		 (coerce str 'string)))
 
-(defun char-36 (str &key neg)
-  (let ((codes)(res)(length (length str)))
-    (if (>= length 6)
-	(setf str (subseq str 0 6))
-	(setf str
-	      (concatenate 'string str (make-string (- 6 length) :initial-element #\Space)))) 
+(defun chars-trytes (str &key neg)
+  (let ((codes)(res))
     (setf codes (map 'list (lambda (x) (char-code x)) str))
     (setf res (reduce
      (lambda (h l)(+ (* h 3^6) l))
      codes))(if neg (- res) res)))
 
-;; Working with balanced ternary floats
+;; Find values of relative addresses on a tape
 
-(defun decode-float3 (x)
-	   (let* 
-	       ((ex (ceiling (log (abs x) 3)))
-		(n (/ x (expt 3 ex)))
-		(sn (signum x)))
-	     (values n ex sn)))
-
-;; Find actual addresses of the next jump, operands and opcode
-
-(defun op-addr (tape spl)
+(defun eval-addr (tape spl)
   (let ((pos (tape-position tape))
 	(l (tape-length tape)))
-  (map 'vector
-   (lambda (x)
-     (elt (tape-vector tape) (mod (+ pos x) l)))
-   (coerce spl 'vector))))
+    (if (numberp spl)
+	(elt (tape-vector tape) (mod (+ pos spl) l))
+	(map 'vector
+	     (lambda (x)
+	       (elt (tape-vector tape) (mod (+ pos x) l)))
+	     (coerce spl 'vector)))))
 
 ;; Decode opcodes
 
 (defun decode-op (n)
-  (let* ((split (op-split n))
-	 (flags (3n-digits (elt split 0)))
-	 (dir)(op)(arg1)(arg2)(halt))
-    (if (car flags)
-	(setf dir (car flags)))
-    (if dir
-	(progn
+  (let ((split (op-split n :width (length (3n-split n))))
+	(flags)
+	(dir (signum n))(param)(op)(halt))
+    (if (zerop dir) (setf halt t)
 	  (setf flags
-		(coerce (mapcar (lambda (_) (* _ dir))
-			(cdr
-			 (append flags
-				 (make-list
-				  (- 9 (length flags)) :initial-element 0))))
-			'vector)
-		op (* (elt split 1) dir)
-		arg1 (* (elt split 2) dir)
-		arg2 (* (elt split 3) dir))	  
-	  (if (zerop op) (setf halt t)))
-	(setf halt t))
-    (coerce (list dir flags op arg1 arg2 halt) 'vector)))
-
+		(cdr (mapcar (lambda (_) (* _ dir)) (3n-digits (elt split 0))))
+		param (* (elt split 1) dir)
+		op (* (elt split 2) dir)))
+    (coerce (list dir flags param op halt) 'vector)))
+  
 ;; Input
 
 (defun convert-minus (s &key (b 27))
@@ -98,72 +79,56 @@
 	     (progn
 	       (push (* (parse-integer (string x) :radix 14) flip) res)
 	       (setf flip 1))))
-    (op-gen (reverse (mapcar (lambda (x)(* x sign)) res)) :b b)))
+    (op-gen (reverse (mapcar (lambda (x)(* x sign)) res)) :width (* (log b 3)3 ))))
 
 ;; Input (unchecked)
 
 (defun ternary-input (&key (mode 0))
   (let ((l (read-line)))
-   (case (abs mode)
-     (0 (char-36 (if (> (length l) 6) (subseq l 0 6) l)))
-     (1 (convert-minus l :b 3)) 
-     (2 (convert-minus l :b 9))
-     (3 (convert-minus l :b 27))
-     (4 (parse-integer l)))))
-
+    (case mode
+      (-1 (parse-integer l))
+      (-2 (convert-minus l :b 3))
+      (1 (convert-minus l :b 9))
+      (4 (convert-minus l :b 27))
+      (t (chars-trytes l)))))
+  
 ;; Output
 
  (defun ternary-output (n &key (mode 0))
    (case mode
-     (-4 (print n))
-     (-3 (ternary-print n :b 27))
-     (-2 (ternary-print n :b 9))
-     (-1 (ternary-print n :b 3))
-     (0 (format t "~a" (36-char n)))
-     (1 (ternary-print n :b 3 :l 36))
-     (2 (ternary-print n :b 9 :l 18))
-     (3 (ternary-print n :b 27 :l 12))
-     (4 (print n)))
+     (-1 (print n))
+     (-2 (ternary-print n :b 3))
+     (1 (ternary-print n :b 9))
+     (4 (ternary-print n :b 27))
+     (t (format t "~a" (trytes-chars n))))
    nil)
 
-(defun run-io-engine (tape)
-  (let* ((length (tape-length tape))
-	 (special (tape-special tape))
-	 (op-split (op-split special))
-	 (op-addr (op-addr tape op-split))
-	 (op-addr2)
-	 (op-value1)
-	 (op-value2)
-	 (op (elt op-addr 3))
-	 (jaddr)
-	 (de-op (decode-op op))
-	 (flags (elt de-op 1))
-	 (args))
-    (setf args
-	  (if flags (elt flags 0) 0))
-    (case args
-      (-1 (setf (elt op-addr 2) (elt op-addr 1)))
-      (1 (setf (elt op-addr 1) (elt op-addr 2))))
-    (setf op-addr2 (op-addr tape op-addr)
-	  op-value1 (elt op-addr2 1)
-	  op-value2 (elt op-addr2 2)
-	  jaddr (elt op-addr2 0)
-	  op-addr (subseq op-addr 1 3))
-    (unless (elt de-op 5)
-	(progn
-	  (multiple-value-bind (a1 a2) (process-op op-value1 op-value2 de-op)
-	    (setf (elt (tape-vector tape)
-		       (mod (+ (tape-position tape) (elt op-addr 0)) length))
-		  a1
-		  (elt (tape-vector tape)
-		       (mod (+ (tape-position tape) (elt op-addr 1)) length))
-		  a2))	
-	  (setf (tape-halted tape) nil
-		(tape-special tape) nil
-		(tape-position tape)
-		(mod (+ (tape-position tape) jaddr) length))))))
+;; Set a tape cell at a relative address
 
-(defun input-output (tape)
-  (if (= (tape-width tape) st-width)
-      (run-io-engine tape)
-      (tape-special tape)))
+(defun set-addr (tape a v)
+  (setf (aref (tape-vector tape)(mod (+ (tape-position tape) a)(tape-length tape)))v))
+
+(defun run-io-engine (tape)
+  (let* ((width (tape-width tape))
+	 (length (tape-length tape))
+	 (op (decode-op (tape-special tape)))
+	 (a1)(a2)(jmp)
+	 (dir (elt op 0))
+	 (halt (elt op 4)))
+    (unless halt
+      (progn
+	(setf jmp (mod (+ (tape-position tape) (* 3 dir)) length)
+	      (tape-position tape) jmp
+	      a1 (eval-addr tape (- dir))
+	      a2 (eval-addr tape dir))
+	(multiple-value-bind (new-a1 new-a2 sign)
+	    (process-op (eval-addr tape a1)(eval-addr tape a2) op)
+	  (progn
+	    (set-addr tape a1 (coerce-width new-a1 :width width))
+	    (set-addr tape a2 (coerce-width new-a2 :width width))
+	    (setf (tape-halted tape) nil
+		  (tape-special tape) nil
+		  (tape-position tape)
+		  (mod (+ (tape-position tape)
+			  (eval-addr tape (+ (eval-addr tape 0) sign)))
+		       length))))))))

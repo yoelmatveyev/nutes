@@ -11,21 +11,22 @@
 
 ;; Getting the sequence of digits in 3^n balanced base
 
-(defun 3n-split (n &optional (b 3))
+(defun 3n-split (n &key (b 3))
+  (labels ((f1 (n &key b)
 	   (let ((bmod (bmod n b)))
-	    (if (zerop n) (list 0)
-		(cons bmod (3n-split (floor (- n bmod) b) b )))))
+	    (unless (zerop n)
+	      (cons bmod (f1 (floor (- n bmod) b) :b b ))))))
+    (if (zerop n) '(0) (f1 n :b b))))
 
 ;; "Little-endian" version of the same
 
 (defun 3n-digits (n &key (b 3) (l nil))
-  (let* ((res (reverse (3n-split n b)))
+  (let* ((res (reverse (3n-split n :b b)))
 	 (ln (length res)))
-    (if l
+    (when l
 	(if (<= l ln)
 	    (setf res (subseq res (- ln l) ln))
-	    (setf res (append (make-list (- l ln) :initial-element 0) res)))
-	(if (= 0 (car res)) (pop res)))
+	    (setf res (append (make-list (- l ln) :initial-element 0) res))))
     res))
 
  (defun ternary-list 

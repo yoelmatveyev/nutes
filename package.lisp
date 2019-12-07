@@ -1,6 +1,9 @@
 (defpackage :cl-nutes 
   (:use :common-lisp)
-  (:export width
+  (:export st-width
+	   st-range
+	   st-power
+	   width
 	   range
 	   power
 	   tape-halted
@@ -12,36 +15,46 @@
 	   one-step
 	   run-tape
 	   bmod
+	   3n-split
 	   3n-digits
+	   ternary-string
 	   ternary-print
 	   op-split
 	   op-gen
-	   36-char
-	   char-36
+	   trytes-chars
+	   chars-trytes
+	   eval-addr
 	   decode-op
 	   convert-minus
+	   ternary-input
+	   ternary-output
+	   set-addr
 	   prg-label-value
 	   prg-list-labels
 	   create-prg
-	   inst-table
-	   add-code-prg
-	   add-var
-	   set-var
-	   add-3jmp
-	   add-one-inst
-	   add-jsub
-	   add-jadd
-	   add-swap
-	   add-set
-	   add-jmp
-	   add-2a
-	   add-3a
-	   add-cmp
-	   add-smul
+	   prg-var
+	   prg-3jmp
+	   prg--
+	   prg-sub
+	   prg-add
+	   prg-swap
+	   prg-mov
+	   prg-sign
+	   prg-mul2
+	   prg-mul3
+	   prg-cmp
+	   prg-smul
 	   hello
-	   add-factorial
-	   add-io
-	   add-fib-pair
+	   prg-factorial
+	   prg-io
+	   prg-fib-pair
+	   prg-movtrit
+	   prg-overadd
+	   prg-shift
+	   prg-width
+	   prg-invert
+	   prg-trit-count
 	   ))
 
 (in-package :cl-nutes)
+	

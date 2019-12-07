@@ -32,9 +32,14 @@
   length
   )
 
-; Constants for standard 36-trit tapes
+; Constants for standard tapes according to the system architecture
 
-(defconstant st-width 36)
+(if (> (floor (log most-positive-fixnum 3)) 36)
+    (defconstant st-width 36)
+    (defconstant st-width 18))
+
+ (defconstant st-width 36)
+
 (defconstant st-power (expt 3 st-width))
 (defconstant st-range (/ (1- st-power) 2))
 
@@ -45,8 +50,7 @@
 (defun create-tape
     (length &key (pos 0) (count 0) (flex nil) (width width))
   (let ((p)(r))
-    (setf flex (if (/= width st-width) t flex)
-	  width (if flex width st-width)
+    (setf flex (if (> width 39) t flex)
 	  p (expt 3 width)
 	  r (/ (1- p) 2))
     (make-tape
@@ -57,7 +61,11 @@
      :flex flex
      :vector (if flex
 		 (make-array length)
-		 (make-array length :element-type 'fixnum))
+		 (if (<= width 9)
+		     (make-array length :element-type '(signed-byte 16))
+		     (if (<= width 19)
+			 (make-array length :element-type '(signed-byte 32))
+			 (make-array length :element-type 'fixnum))))
      :length length
      :halted nil
      :special nil
@@ -88,8 +96,10 @@
       ((l (tape-length tape))
        (p (tape-position tape))
        (v (tape-vector tape))
+       (power (tape-power tape))
+       (range (tape-range tape))
        (p+ 0) (p- 0) (j 0) (pj 0) (j- 0) (j+ 0) (j0 0) (m+ 0) (m- 0) (a+ 0) (a- 0) (sub 0) (sign 0))
-    (declare (type fixnum p l p+ p- j pj j- j+ j0 a+ a- sub sign))   
+    (declare (type fixnum p l p+ p- j pj j- j+ j0 a+ a- sub sign power range))   
     (setf j (aref v p))
     (if (plusp p)
 	(if (= 1 (- l p))
@@ -108,15 +118,15 @@
 	  a+ (aref v m+)
 	  a- (aref v m-)
 	  sub (let ((n (- a+ a-)))
-		(if (> n st-range) (- n st-power)
-		    (if (< n (- st-range)) (+ st-power n)
+		(if (> n range) (- n power)
+		    (if (< n (- range)) (+ power n)
 			n)))
 	  sign (+ (signum a+)(signum a-)))
     (incf (tape-counter tape))
     (if (and (zerop j0) (zerop sub))
 	(progn (setf (tape-halted tape) t
 		     (tape-special tape) a+)
-	       (input-output tape))
+	       (run-io-engine tape))
 	(progn
 	  (if (plusp sign)
 	      (setf (tape-position tape) (mod (+ p j+) l))
@@ -164,7 +174,7 @@
   (if (and (zerop j0) (zerop sub))
       (progn (setf (tape-halted tape) t
 		   (tape-special tape) a+)
-	     (input-output tape))
+	     (run-io-engine tape))
       (progn
 	(if (plusp sign)
 	    (setf (tape-position tape) (mod (+ p j+) l))
@@ -200,9 +210,7 @@
   (loop for x from 1 to n unless (tape-halted tape) do
        (if (tape-flex tape)
 	   (one-step-flex tape)
-	   (one-step tape)))
-  (if (tape-halted tape)
-	(format t "~&Tape halted~&")))
+	   (one-step tape))))
 
 ; Indefinitely
 
@@ -213,6 +221,4 @@
 	 while (not (tape-halted tape)))
       (loop do
 	   (one-step tape)
-	 while (not (tape-halted tape))))
-  (if (tape-halted tape)
-	(format t "~&Tape halted~&")))
+	 while (not (tape-halted tape)))))

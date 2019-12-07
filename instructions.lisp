@@ -6,7 +6,7 @@
 
 ; jmp (-(b=b-a))
 
-(defun prg-sub (prg a b &key label jlabel (jmp (jmp+3 prg)))
+(defun prg-sub (prg a b &key label jlabel (jmp 'jmp+3))
   (prg-- prg a 'z1 :label label)
   (prg-- prg 'z1 'z2)
   (prg-- prg 'z1 'z1)
@@ -15,20 +15,20 @@
 
 ; jmp (-(b=b+a))
 
-(defun prg-add (prg a b &key label jlabel (jmp (jmp+3 prg)))
+(defun prg-add (prg a b &key label jlabel (jmp 'jmp+3))
   (prg-- prg a 'z1 :label label)
   (prg-- prg b 'z1)
   (prg-- prg 'z1 'z1 :jmp jmp :jlabel jlabel))
 
 ; jmp (-a)
 
-(defun prg-jmp (prg a &key label jlabel (jmp (jmp+3 prg)))
+(defun prg-sign (prg a &key label jlabel (jmp 'jmp+3))
   (prg-- prg a 'z1 :label label)
   (prg-- prg 'z1 'z1 :jmp jmp :jlabel jlabel))
 
 ; jmp(-(b=a))
 
-(defun prg-mov (prg a b &key label jlabel (jmp (jmp+3 prg)))
+(defun prg-mov (prg a b &key label jlabel (jmp 'jmp+3))
   (prg-- prg a 'z1 :label label)
   (prg-- prg b b)
   (prg-- prg 'z1 b)
@@ -36,7 +36,7 @@
 
 ; swap(a,b)
 
-(defun prg-swap (prg a b &key label)
+(defun prg-swap (prg a b &key label jlabel (jmp 'jmp+3))
   (prg-- prg a 'z1 :label label)
   (prg-- prg b 'z2)
   (prg-- prg b b)
@@ -44,18 +44,18 @@
   (prg-- prg a a)
   (prg-- prg a 'z2)
   (prg-- prg 'z1 'z1)
-  (prg-- prg 'z2 'z2))
+  (prg-- prg 'z2 'z2 :jmp jmp :jlabel jlabel))
 
 ; jmp(-(a=a*2))
 
-(defun prg-2a (prg a &key label jlabel (jmp (jmp+3 prg)))
+(defun prg-mul2 (prg a &key label jlabel (jmp 'jmp+3))
   (prg-- prg a 'z1 :label label)
   (prg-- prg a 'z1)
   (prg-- prg 'z1 'z1 :jmp jmp :jlabel jlabel))
 
 ; jmp(-(a=a*3))
 
-(defun prg-3a (prg a &key label jlabel (jmp (jmp+3 prg)))
+(defun prg-mul3 (prg a &key label jlabel (jmp 'jmp+3))
   (prg-- prg a 'z1 :label label)
   (prg-- prg 'z1 'z2)
   (prg-- prg 'z1 'z2)
@@ -65,7 +65,7 @@
 
 ; jmp(b-a)
 
-(defun prg-cmp (prg a b &key label (jlabel nil) (jmp (jmp+3 prg)))
+(defun prg-cmp (prg a b &key label (jlabel nil) (jmp 'jmp+3))
   (prg-- prg a 'z1 :label label)
   (prg-- prg b 'z2)
   (prg-- prg 'z1 'z2)
