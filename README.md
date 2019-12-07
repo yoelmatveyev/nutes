@@ -35,7 +35,7 @@ a1 j a2 (if the opcode is >0)
 
 a2 j a1 (if the opcode is <0)
 
-This arrangement preserving the sign/direction symmetry explained below. When defining new operations for the engine and designing new devices to be operated by it, one must be careful to preserve this symmetry.
+This arrangement preserves the sign/direction symmetry explained below. When defining new operations for the engine and designing new devices to be operated by it, one must be careful to preserve this symmetry.
 
 Just like in the main machine, the cell j contains a pointer to three other cells, which contain a series of jump addresses relative to the current cell:
 
