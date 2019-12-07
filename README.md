@@ -50,8 +50,11 @@ Tapes may be programmed by a simple interactive assembler indended to be used in
 Three operations are currently defined for the IO engine: 
 
 Opcode  Operation
+
 -1      Input
+
 0       Output/Input
+
 -1      Output
 
 The second arguments of these operations addresses a stream or a device, which processes the first argument, the flags and the additional parameter of the opcode. Currently, the stream agrument is ignored and the lowest 2 trits of the additional parameter are interpreted as alphanumeric, ternary, balanced base-9. balanced base-27 and decimal IO for stdin/stdout.
