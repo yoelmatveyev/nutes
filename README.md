@@ -73,7 +73,7 @@ The head reads two operand pointers, both located by -2 cells to the left of its
 
 ## IO
 
-The following program produced by the assembler and made for tapes at least 36 trits wide asks a name for input and outputs "Hello World, [user]":
+The following program produced by the assembler and made for tapes at least 36 trits wide asks a name for input and outputs "Hello World,[user]":
 
 (9 16086946250976080 17943922394188172 14852728792888700 0 0 0 0 0 0 -1 1 36 3 3 3 -17 
 Start-> 0
