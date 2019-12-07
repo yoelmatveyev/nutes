@@ -72,7 +72,9 @@ The head reads two operand pointers, both located by -2 cells to the left of its
 
 The following program produced by the assembler and made for tapes at least 36 trits wide asks a name for input and outputs "Hello World, [user]":
 
-(9 16086946250976080 17943922394188172 14852728792888700 0 0 0 0 0 0 -1 1 36 3 3 3 -17 Start->0 -17 -19 -6 -3 -12 0 -12 -23 -12 -9 -18 0 -18 -30 -18 -15 -24 0 -24 -37 -24 -21)
+(9 16086946250976080 17943922394188172 14852728792888700 0 0 0 0 0 0 -1 1 36 3 3 3 -17 
+Start-> 0
+-17 -19 -6 -3 -12 0 -12 -23 -12 -9 -18 0 -18 -30 -18 -15 -24 0 -24 -37 -24 -21)
 
 A block of 12 cells (0 0 0 0 0 0 -1 1 36 3 3 3) is predefined by the function (create-prg) for standard variables necessary for basic programming.
 
@@ -84,7 +86,17 @@ While the double negation and triple branching based on the signs of the operand
 
 0 -18 -20 -4 3 (Head)-> -4 2 -1 -1
 
-The sign sum is now negative. The result is exactly the same as above. The jump address, now for the negative case is 0 and the result of subtraction is 0. The machine halts.  
+The sign sum is now negative. The result is exactly the same as above. The jump address, now for the negative case is 0 and the result of subtraction is 0. The machine halts.
+
+The following tape is the exact sign/direction reverse of the above "Hello World" program:
+
+(21 24 37 24 0 24 15 18 30 18 0 18 9 12 23 12 0 12 3 6 19 17
+
+Start-> 0 
+
+17 -3 -3 -3 -36 -1 1 0 0 0 0 0 0 -14852728792888700 -17943922394188172 -16086946250976080 -9)
+
+It works the same and outputs "̅H̅e̅l̅l̅o̅ ̅W̅o̅r̅l̅d̅,[user]". Overlined characters represent negative character values.
 
 This unusual symmetrical feature, much in the spirit of the general symmetrical nature of balanced ternary arithmetics, may help to understand better ternary programming and, perhaps, perform some automated code manipulations.
 
