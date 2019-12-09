@@ -123,10 +123,11 @@
 			n)))
 	  sign (+ (signum a+)(signum a-)))
     (incf (tape-counter tape))
-    (if (and (zerop j0) (zerop sub))
-	(progn (setf (tape-halted tape) t
-		     (tape-special tape) a+)
-	       (run-io-engine tape))
+    (if (zerop j0)
+	(progn
+	  (setf (tape-halted tape) t
+		(tape-special tape) (+ a- a+))
+	  (run-io-engine tape))
 	(progn
 	  (if (plusp sign)
 	      (setf (tape-position tape) (mod (+ p j+) l))
@@ -171,10 +172,11 @@
 		      n)))
 	sign (+ (signum a+)(signum a-)))
   (incf (tape-counter tape))
-  (if (and (zerop j0) (zerop sub))
-      (progn (setf (tape-halted tape) t
-		   (tape-special tape) a+)
-	     (run-io-engine tape))
+  (if (zerop j0)
+      (progn
+	(setf (tape-halted tape) t
+	      (tape-special tape)(+ a- a+))
+	(run-io-engine tape))
       (progn
 	(if (plusp sign)
 	    (setf (tape-position tape) (mod (+ p j+) l))
