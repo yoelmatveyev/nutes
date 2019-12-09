@@ -76,8 +76,10 @@ The head reads two operand pointers, both located by -2 cells to the left of its
 The following program produced by the assembler and made for tapes at least 36 trits wide asks a name for input and outputs "Hello World,[user]":
 
 (9 16086946250976080 17943922394188172 14852728792888700 0 0 0 0 0 0 -1 1 36 3 3 3 -17 
+
 Start-> 0
--17 -19 -6 -3 -12 0 -12 -23 -12 -9 -18 0 -18 -30 -18 -15 -24 0 -24 -37 -24 -21)
+
+-8 -19 -6 -3 -12 0 -14 -23 -12 -9 -18 0 -20 -30 -18 -15 -24 0 -26 -37 -24 -21)
 
 A block of 12 cells (0 0 0 0 0 0 -1 1 36 3 3 3) is predefined by the function (create-prg) for standard variables necessary for basic programming.
 
@@ -93,7 +95,7 @@ The sign sum is now negative. The result is exactly the same as above. The jump 
 
 The following tape is the exact sign/direction reverse of the above "Hello World" program:
 
-(21 24 37 24 0 24 15 18 30 18 0 18 9 12 23 12 0 12 3 6 19 17
+(21 24 37 26 0 24 15 18 30 20 0 18 9 12 23 14 0 12 3 6 19 8
 
 Start-> 0 
 
