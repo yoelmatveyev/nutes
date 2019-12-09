@@ -126,7 +126,11 @@
     (if (zerop j0)
 	(progn
 	  (setf (tape-halted tape) t
-		(tape-special tape) (+ a- a+))
+		(tape-special tape)
+		(let ((n (+ a+ a-)))
+		(if (> n range) (- n power)
+		    (if (< n (- range)) (+ power n)
+			n))))
 	  (run-io-engine tape))
 	(progn
 	  (if (plusp sign)
@@ -175,7 +179,11 @@
   (if (zerop j0)
       (progn
 	(setf (tape-halted tape) t
-	      (tape-special tape)(+ a- a+))
+	      (tape-special tape)
+	      (let ((n (+ a+ a-)))
+		(if (> n range) (- n power)
+		    (if (< n (- range)) (+ power n)
+			n))))
 	(run-io-engine tape))
       (progn
 	(if (plusp sign)
