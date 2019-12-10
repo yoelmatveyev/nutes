@@ -127,4 +127,4 @@ https://en.wikipedia.org/wiki/Balanced_ternary
 
 # Copyright
 
-Yoel Matveyev, 2019
+Yoel Matveyev, 2017
