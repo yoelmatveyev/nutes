@@ -109,7 +109,7 @@ This unusual symmetrical feature, much in the spirit of the general symmetrical 
 
 ## 1
 
-Unlike SUBLEQ, another esoteric one instruction machine, which also served as a source of inspiration for this project, branching in Nutes is decided **before** the subtraction. This allows to achieve the signwise symmetry explained below. SUBLEQ is known to be a practical computation model. A generalized version of SUBLEQ is easy to emulate in Nutes, as shown in the file instructions.lisp in this project.
+Unlike SUBLEQ, branching in Nutes is decided **before** the subtraction. This allows to achieve the signwise symmetry explained above. SUBLEQ is known to be a practical computation model. A generalized version of SUBLEQ is easy to emulate in Nutes, as shown in the file instructions.lisp in this project.
 
 Also note that the original values of the operands are preserved in case of halting and may be reused for interrupts, IO and other extentions.
 
