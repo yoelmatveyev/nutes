@@ -103,7 +103,7 @@ Start-> 0
 
 It works the same and outputs "̅H̅e̅l̅l̅o̅ ̅W̅o̅r̅l̅d̅,[user]". Overlined characters represent negative character values.
 
-This unusual symmetrical feature, much in the spirit of the general symmetrical nature of balanced ternary arithmetics, may help to understand better ternary programming and, perhaps, perform some automated code manipulations. Chunks of code may be freely moves across the tape, concatenated and even reversed. Data, including the jump addresses, could be easily separated from the code. If the code part of a program is moved to n cells, n may be just added to each cells of the code, while the data part remains the same.  
+This unusual symmetrical feature, much in the spirit of the general symmetrical nature of balanced ternary arithmetics, may help to understand better ternary programming and, perhaps, perform some automated code manipulations. Chunks of code may be freely moved across the tape, concatenated and even reversed. Data, including the jump addresses, could be easily separated from the code, as shown in the design of the assembler. If the code part of a program is moved to n cells, n may be just added to each cell of the code, while the data part remains exactly the same.  
 
 # Notes
 
