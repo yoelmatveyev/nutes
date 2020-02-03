@@ -45,7 +45,7 @@ Depending on the sign returned by the operation, the interrupt engine jumps to j
 
 # Assember and IO engine
 
-Tapes may be programmed by a simple interactive assembler indended to be used in REPL and a basic set of composed instructions, such as addition, subtraction, left shift (identical in balanced ternary to multiplication by 3), moving, comparison, swapping etc.
+Tapes may be programmed by a simple interactive assembler intended to be used in REPL, which includes a basic set of composed instructions, such as addition, subtraction, left shift (identical in balanced ternary to multiplication by 3), moving, comparison, swapping etc.
 
 Three operations are currently defined for the IO engine: 
 
@@ -55,7 +55,7 @@ Opcode  Operation
 
 0       Output/Input
 
--1      Output
+1      Output
 
 The second arguments of these operations addresses a stream or a device, which processes the first argument, the flags and the additional parameter of the opcode. Currently, the stream agrument is ignored and the lowest 2 trits of the additional parameter are interpreted as alphanumeric, ternary, balanced base-9. balanced base-27 and decimal IO for stdin/stdout.
 
