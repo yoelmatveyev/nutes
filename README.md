@@ -27,7 +27,7 @@ The choice between the jumps depends on the sum of signs of v1 and v2. The head 
 
 If the computation continues uninterrupted, the values of v1 and v2 are replaced, respectively, by v1-v2 and v2-v1.
 
-If j0 is 0 and the sum sign of v1 and v2 is 0, the machine interrupts and passes the value of v1+v2 (trancated to the width) as an opcode for the IO engine. The engine splits the opcode into 3 equal parts, starting from the highest-value trit: flags, additional parameter and the operation code. If the tape width is not divisible by 3, the remaining 1 or 2 lowest trits are discarded. If the opcode is 0, the machine halts unconditionally (this prevents an obvious cause of infinite loops).
+If j0 is 0 and the sum sign of v1 and v2 is 0, the machine interrupts and passes the value of v1+v2 (truncated to the width) as an opcode for the IO engine. The engine splits the opcode into 3 equal parts, starting from the highest-value trit: flags, additional parameter and the operation code. If the tape width is not divisible by 3, the remaining 1 or 2 lowest trits are discarded. If the opcode is 0, the machine halts unconditionally (this prevents an obvious cause of infinite loops).
 
 The IO engine evaluates its position on the tape (-3 or +3 from the position before the interrupt) as a jump address and two other cells next to it on both sides of the tape as two operands, similar to the main machine. The order of the operands depends in the sign of the opcode:
 
