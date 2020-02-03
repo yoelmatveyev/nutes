@@ -119,7 +119,7 @@ After a series of practical experiments, the 36-trit has been chosen as the defa
 
 The impementation is optimized for machines with various widths up to 36. The suggested bare minimal tape width is 6 trits or a tryte, a group of 6 trits, like the minimal addressable memory unit in the original Soviet machine. Although, it is technically possible to implement a "Hello World" program even on the absolutely minimalistic 3-trit tape, which may serve as an excercise in esoretic computing.
 
-As long as programs made for a lower width don't rely on a patricular width value, they remain back compatible with higher widths.
+As long as programs made for a lower width don't rely on a particular width value, they remain backward compatible with higher widths.
 
 # More about the balanced ternary
 
