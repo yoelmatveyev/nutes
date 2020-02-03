@@ -6,7 +6,7 @@ Nutes (reverse of Setun) is a simple abstract machine, a ternary variety of OISC
 
 Another source of inspiration behind this projects is SUBLEQ, a one instruction set computer that uses "subtract and branch if negative" as its sole operation. SUBLEQ is trivial to emulate by Nutes.
 
-The Nutes machine is truly Turing-complete (given an infinite tape). Arguably, Nutes is more practical than plain SUBLEQ without an interrpupt mechanism for computations of any complexity.
+The Nutes machine is truly Turing-complete (given an infinite tape). Arguably, plain Nutes is more practical than plain SUBLEQ, not counting the interrupt mechanism, which may be implemented in both cases in many different ways.
 
 
 # Description
