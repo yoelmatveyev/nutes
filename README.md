@@ -21,9 +21,9 @@ The cell j contains a pointer to three other cells, which contain a series of ju
 
 j- j0 j+
 
-If j=0 (an obviously aberrant case), the machine interrupts and passes the value of v1+v2 (truncated to the width) as an opcode for the IO engine (see below).
+The cells x and y contain pointers to two other cells, v1 and v2, which contain the actual operands. The pointers are relative to the current cell.
 
-The cells x and y contain pointers to two other cells, v1 and v2, which contain the actual operands. The pointers are relative to the current position of the machine head.
+If j=0 (an obviously pathological case, which conflates the operands and jump addresses), the machine interrupts and passes the value of v1+v2 (truncated to the width) as an opcode for the IO engine (see below).
 
 The choice between the jumps depends on the sum of signs of v1 and v2. The head jumps to j- number of cells, if the result is negative, to j+ number of cells, if the result is positive, or to j0 cells, if the result is zero. 
 
