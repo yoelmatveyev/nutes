@@ -123,7 +123,7 @@
 			n)))
 	  sign (+ (signum a+)(signum a-)))
     (incf (tape-counter tape))
-    (if (zerop j)
+    (if (zerop j0)
 	(progn
 	  (setf (tape-halted tape) t
 		(tape-special tape)
@@ -176,7 +176,7 @@
 		      n)))
 	sign (+ (signum a+)(signum a-)))
   (incf (tape-counter tape))
-  (if (zerop j)
+  (if (zerop j0)
       (progn
 	(setf (tape-halted tape) t
 	      (tape-special tape)
