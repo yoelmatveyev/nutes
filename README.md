@@ -17,11 +17,11 @@ The head of the machine reads the current cell and two other cells next to it on
 
 x j y
 
-If j is 0, the machine interrupts and passes the value of v1+v2 (truncated to the width) as an opcode for the IO engine (see below).
-
-If j is not 0, the cell j contains a pointer to three other cells, which contain a series of jump addresses relative to the current cell:
+The cell j contains a pointer to three other cells, which contain a series of jump addresses relative to the current cell:
 
 j- j0 j+
+
+If j=0 (an obviously aberrant case), the machine interrupts and passes the value of v1+v2 (truncated to the width) as an opcode for the IO engine (see below).
 
 The cells x and y contain pointers to two other cells, v1 and v2, which contain the actual operands. The pointers are relative to the current position of the machine head.
 
