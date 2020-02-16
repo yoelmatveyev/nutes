@@ -17,7 +17,9 @@ The head of the machine reads the current cell and two other cells next to it on
 
 x j y
 
-The cell j contains a pointer to three other cells, which contain a series of jump addresses relative to the current cell:
+If j is 0, the machine interrupts and passes the value of v1+v2 (truncated to the width) as an opcode for the IO engine (see below).
+
+If j is not 0, the cell j contains a pointer to three other cells, which contain a series of jump addresses relative to the current cell:
 
 j- j0 j+
 
@@ -27,7 +29,7 @@ The choice between the jumps depends on the sum of signs of v1 and v2. The head 
 
 If the computation continues uninterrupted, the values of v1 and v2 are replaced, respectively, by v1-v2 and v2-v1.
 
-If j=0, the machine interrupts and passes the value of v1+v2 (truncated to the width) as an opcode for the IO engine. The engine splits the opcode into 3 equal parts, starting from the highest-value trit: flags, additional parameter and the operation code. If the tape width is not divisible by 3, the remaining 1 or 2 lowest trits are discarded. If the opcode is 0, the machine halts unconditionally (this prevents an obvious cause of infinite loops).
+If the computation is interrupted, the IP engine splits the opcode (v1+v2) into 3 equal-width parts, starting from the highest-value trit: flags, additional parameter and the operation code. If the tape width is not divisible by 3, the remaining 1 or 2 lowest trits are discarded. If the opcode is 0, the machine halts unconditionally (this prevents an obvious cause of infinite loops).
 
 The IO engine evaluates its position on the tape (-3 or +3 from the position before the interrupt) as a jump address and two other cells next to it on both sides of the tape as two operands, similar to the main machine. The order of the operands depends in the sign of the opcode:
 
