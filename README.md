@@ -136,7 +136,7 @@ As long as programs made for a lower width don't rely on a particular width valu
 
 ## 3
 
-According to the formula of the IO engine's opcode, it is impossible to set it to 1. However, 1 would be an abnormally short opcode. The same exact operation, basic alphanumeric output, is indicated by the opcode 9 (or, in general, 3^(3\*n+2)+1)). 
+According to the formula of the IO engine's opcode, it is impossible to set it to 1. However, 1 would be an abnormally short opcode. The same exact operation, basic alphanumeric output, is indicated by the opcode 9 (or, in general, 3^(3\*n+2)+1)), where n is a not-negative integer). 
 
 # More about the balanced ternary
 
