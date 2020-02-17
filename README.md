@@ -23,15 +23,24 @@ j- j0 j+
 
 The cells x and y contain pointers to two other cells, v1 and v2, which contain the actual operands. The pointers are relative to the current cell.
 
-If j0=0, the machine interrupts and passes the value of v1+v2 (truncated to the width) as an opcode for the IO engine (see below). This interrupt condition includes the pathological case of j=0, which conflates the operands and jump addresses, and the potentially pathological case of j pointing to a zero-filled area of memory.
+In pathological cases leading to infinite loops, the machine interrupts and passes an opcode for the IO engine (see below).
 
-The choice between the jumps depends on the sum of signs of v1 and v2. The head jumps to j- number of cells, if the result is negative, to j+ number of cells, if the result is positive, or to j0 cells, if the result is zero. 
+The choice between the jumps depends on the **sum of signs** of v1 and v2. The head jumps to j- number of cells, if the sum sign is negative, to j+ number of cells, if the sun sign is positive, or to j0 cells, if the sum sign is zero. 
 
 If the computation continues uninterrupted, the values of v1 and v2 are replaced, respectively, by v1-v2 and v2-v1.
 
-If the computation is interrupted, the IP engine splits the opcode (v1+v2) into 3 equal-width parts, starting from the highest-value trit: flags, additional parameter and the operation code. If the tape width is not divisible by 3, the remaining 1 or 2 lowest trits are discarded. If the opcode is 0, the machine halts unconditionally (this prevents an obvious cause of infinite loops).
+The interrupt conditions are as follows:
 
-The IO engine evaluates its position on the tape (-3 or +3 from the position before the interrupt) as a jump address and two other cells next to it on both sides of the tape as two operands, similar to the main machine. The order of the operands depends in the sign of the opcode:
+1. The sum sign of the operation and the next jump address j0 must be both 0.
+2. If the previous condition is true and x or y is 0, v1-v2 must also be 0.
+
+The second codition excludes some self-modifying operations that, while being extremely convoluted, may not lead to an infinite loop. If both conditions are true, the operation, if it were not interrupted, would certainly lead to an infinite zero-jump loop.
+
+Depending on which absolute value, v1 or v2, is greater, v1 or v2 is respectively used as an opcode for the IO engine. If abs(v1)=abs(v2), the opcode is 0 and the machine halts unconditionally (this prevents another cause of infinite loops). 
+
+The IO engine splits the opcode into 3 equal-width parts, starting from the highest-value trit: flags, additional parameter and the operation code. If the tape width is not divisible by 3, the remaining 1 or 2 lowest trits are discarded.
+
+The IO engine jumps to either -3 or +3 from the position, according to the sign of the opcode, and evaluates the new tape position as a jump address, while two cells next to it on both sides of the tape are used as two operands, just like the main machine. The order of the operands depends in the sign of the opcode:
 
 a1 j a2 (if the opcode is >0)
 
@@ -39,7 +48,7 @@ a2 j a1 (if the opcode is <0)
 
 This arrangement preserves the sign/direction symmetry explained below. When defining new operations for the engine and designing new devices to be operated by it, one must be careful to preserve this symmetry.
 
-Just like in the main machine, the cell j contains a pointer to three other cells, which contain a series of jump addresses relative to the current cell:
+Just like in the main machine, the cell j contains a pointer to three other cells, which contain a series of jump addresses relative to the new current cell:
 
 j- j0 j+
 
@@ -77,11 +86,13 @@ The head reads two operand pointers, both located by -2 cells to the left of its
 
 The following program produced by the assembler and made for tapes at least 36 trits wide asks a name for input and outputs "Hello World,[user]":
 
-(9 16086946250976080 17943922394188172 14852728792888700 0 0 0 0 0 0 -1 1 36 3 3 3 -17 
+(10 9 16086946250976080 17943922394188172 14852728792888700 0 0 0 0 0 0 -1 1 36
+ 3 3 3 -17
 
 Start-> 0
 
--8 -19 -6 -3 -12 0 -14 -23 -12 -9 -18 0 -20 -30 -18 -15 -24 0 -26 -37 -24 -21)
+-7 -19 -6 -3 -24 0 -13 -23 -12 -9 -30 0 -19 -30 -18 -15 -36 0 -25 -37
+ -24 -21)
 
 A block of 12 cells (0 0 0 0 0 0 -1 1 36 3 3 3) is predefined by the function (create-prg) for standard variables necessary for basic programming.
 
@@ -97,11 +108,11 @@ The sign sum is now negative. The result is exactly the same as above. The jump 
 
 The following tape is the exact sign/direction reverse of the above "Hello World" program:
 
-(21 24 37 26 0 24 15 18 30 20 0 18 9 12 23 14 0 12 3 6 19 8
+(21 24 37 25 0 36 15 18 30 19 0 30 9 12 23 13 0 24 3 6 19 7
 
 Start-> 0 
 
-17 -3 -3 -3 -36 -1 1 0 0 0 0 0 0 -14852728792888700 -17943922394188172 -16086946250976080 -9)
+-3 -3 -3 -36 -1 1 0 0 0 0 0 0 -14852728792888700 -17943922394188172 -16086946250976080 -9 -10)
 
 It works the same and outputs "̅H̅e̅l̅l̅o̅ ̅W̅o̅r̅l̅d̅,[user]". Overlined characters represent negative character values.
 
@@ -122,6 +133,10 @@ After a series of practical experiments, the 36-trit has been chosen as the defa
 The impementation is optimized for machines with various widths up to 36. The suggested bare minimal tape width is 6 trits or a tryte, a group of 6 trits, like the minimal addressable memory unit in the original Soviet machine. Although, it is technically possible to implement a "Hello World" program even on the absolutely minimalistic 3-trit tape, which may serve as an excercise in esoretic computing.
 
 As long as programs made for a lower width don't rely on a particular width value, they remain backward compatible with higher widths.
+
+## 3
+
+According to the formula of the IO engine's opcode, it is impossible to set it to 1. However, 1 would be an abnormally short opcode. The same exact operation, basic alphanumeric output, is indicated by the opcode 9 (or, in general, 3^(3\*n+2)+1)). 
 
 # More about the balanced ternary
 
