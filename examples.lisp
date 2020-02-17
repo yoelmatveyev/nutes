@@ -49,11 +49,12 @@
   (prg-var prg 'hello (chars-trytes "Hello "))
   (prg-var prg 'world (chars-trytes "World,"))
   (prg-var prg 'name (chars-trytes "Name? "))
-  (prg-var prg 'io1 9)
-  (prg-io prg 'io1 'name 0)
-  (prg-io prg 'v=1 'hello 0) 
-  (prg-io prg 'v=1 'world 0)
-  (prg-io prg 'v=1 'name 0))
+  (prg-var prg 'io 9)
+  (prg-var prg 'out 10)
+  (prg-io prg 'io 'name 0)
+  (prg-io prg 'out 'hello 0) 
+  (prg-io prg 'out 'world 0)
+  (prg-io prg 'out 'name 0))
 
 ;; Determine the highest trit of the first operand, left-shift both operands and add the resulting trit to the second operand. This is a basic construction block for right shifts, tritwise operations and double-operand arithmetics.
 

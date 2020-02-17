@@ -234,7 +234,7 @@
 ;; Set an IO environment
 
 (defun prg-io (prg op a1 a2 &key label (jmp 'jmp+3))
-  (prg-- prg op 'z1 :zero t :label label)
+  (prg-- prg op 'v=-1 :zero t :label label)
   (prg-- prg a1 a2 :jmp jmp))
 
 ;; List all labels
