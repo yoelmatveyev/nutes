@@ -23,7 +23,7 @@ j- j0 j+
 
 The cells x and y contain pointers to two other cells, v1 and v2, which contain the actual operands. The pointers are relative to the current cell.
 
-In pathological cases leading to infinite loops, the machine interrupts and passes an opcode for the IO engine (see below).
+**In pathological cases leading to immediate infinite loop stuck to the same address**, the machine interrupts and passes an opcode for the IO engine (see below).
 
 The choice between the jumps depends on the **sum of signs** of v1 and v2. The head jumps to j- number of cells, if the sum sign is negative, to j+ number of cells, if the sun sign is positive, or to j0 cells, if the sum sign is zero. 
 
