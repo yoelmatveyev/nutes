@@ -114,7 +114,7 @@ The following tape is the exact sign/direction reverse of the above "Hello World
 
 Start-> 0 
 
--3 -3 -3 -36 -1 1 0 0 0 0 0 0 -14852728792888700 -17943922394188172 -16086946250976080 -9 -10)
+17 -3 -3 -3 -36 -1 1 0 0 0 0 0 0 -14852728792888700 -17943922394188172 -16086946250976080 -9 -10)
 
 It works the same and outputs "̅H̅e̅l̅l̅o̅ ̅W̅o̅r̅l̅d̅,[user]". Overlined characters represent negative character values.
 
