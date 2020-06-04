@@ -1,6 +1,6 @@
 In this example we'll work inside the package **cl-nutes**:
 
-(asdf:operate 'asdf:load-op 'cl-nutes)
+CL-USER> (asdf:operate 'asdf:load-op 'cl-nutes)
 
 Let's create a tape of 3^12=531441. The default word width will be 36 trits.
 
