@@ -31,7 +31,7 @@ If the computation continues uninterrupted, the values of v1 and v2 are replaced
 
 The interrupt condition is as follows:
 
-'''The sum sign of the operation and the next jump address j0 must be both 0'''
+**The sum sign of the operation and the next jump address j0 must be both 0**
 
 Although in some rare edge cases, when either x, j or y is modified preventing the fall into an infinite loop, such cases are disregarded as rare exceptions. Normally the interrupt condition indicates an uncoming immediate infinite loop.
 
