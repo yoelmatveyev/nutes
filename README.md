@@ -23,18 +23,17 @@ j- j0 j+
 
 The cells x and y contain pointers to two other cells, v1 and v2, which contain the actual operands. The pointers are relative to the current cell.
 
-**In pathological cases leading to immediate infinite loop stuck to the same address**, the machine interrupts and passes an opcode for the IO engine (see below).
+In cases normally leading to an immediate infinite loop stuck to the same address, the machine interrupts and passes an opcode for the IO engine (see below).
 
 The choice between the jumps depends on the **sum of signs** of v1 and v2. The head jumps to j- number of cells, if the sum sign is negative, to j+ number of cells, if the sun sign is positive, or to j0 cells, if the sum sign is zero. 
 
 If the computation continues uninterrupted, the values of v1 and v2 are replaced, respectively, by v1-v2 and v2-v1.
 
-The interrupt conditions are as follows:
+The interrupt condition is as follows:
 
-1. The sum sign of the operation and the next jump address j0 must be both 0.
-2. If the previous condition is true and x or y is 0, v1-v2 must also be 0.
+'''The sum sign of the operation and the next jump address j0 must be both 0'''
 
-The second codition excludes some self-modifying operations that, while being extremely convoluted, may not lead to an infinite loop. If both conditions are true, the operation, if it were not interrupted, would certainly lead to an infinite zero-jump loop.
+Although in some rare edge cases, when either x, j or y is modified preventing the fall into an infinite loop, such cases are disregarded as rare exceptions. Normally the interrupt condition indicates an uncoming immediate infinite loop.
 
 Depending on which absolute value, v1 or v2, is greater, v1 or v2 is respectively used as an opcode for the IO engine. If abs(v1)=abs(v2), the opcode is 0 and the machine halts unconditionally (this prevents another cause of infinite loops). 
 
