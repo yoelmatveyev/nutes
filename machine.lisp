@@ -131,9 +131,7 @@
 			(aref v (1- j)))
 		    (aref v (1- l))))))
   (incf (tape-counter tape))
-  (if (and (zerop new-jmp) (zerop sign)
-	   (if (or (zerop p+)(zerop p-))
-	       (zerop sub) t))
+  (if (and (zerop new-jmp) (zerop sign))
       (progn
 	(setf (tape-halted tape) t
 	      (tape-special tape)
@@ -191,9 +189,7 @@
 			(aref v (1- j)))
 		    (aref v (1- l))))))
   (incf (tape-counter tape))
-  (if (and (zerop new-jmp) (zerop sign)
-	   (if (or (zerop p+)(zerop p-))
-	       (zerop sub) t))
+  (if (and (zerop new-jmp) (zerop sign))
       (progn
 	(setf (tape-halted tape) t
 	      (tape-special tape)
