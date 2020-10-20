@@ -33,7 +33,7 @@ The interrupt condition is as follows:
 
 **The sum sign of the operation and the next jump address j0 must be both 0**
 
-Although in some rare edge cases, when either x, j or y is modified preventing the fall into an infinite loop, such cases are disregarded as rare exceptions. Normally the interrupt condition indicates an uncoming immediate infinite loop.
+Although in some rare edge cases, when either x, j or y is modified preventing the fall into an infinite loop, such cases are disregarded as rare exceptions. Normally the interrupt condition indicates an upcoming immediate infinite loop.
 
 Depending on which absolute value, v1 or v2, is greater, v1 or v2 is respectively used as an opcode for the IO engine. If abs(v1)=abs(v2), the opcode is 0 and the machine halts unconditionally (this prevents another cause of infinite loops). 
 
