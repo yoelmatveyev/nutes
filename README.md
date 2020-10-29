@@ -2,7 +2,7 @@
 
 In 1959, a group of scientists at the Moscow State University developed the unique experimental computer Setun, which used the balanced ternary numeral system instead of binary. The design has been was proven to be remarkably stable, efficient and elegant. Although the production was disbanded in 1965, major computer scientists, including Donald Knuth, still find ternary computers exceptionally attractive.
 
-Nutes (reverse of Setun) is a simple abstract machine, a ternary variety of OISC (one instruction set computer). Invented as a tribute to early Soviet computers,  this machine, also implementing an esoteric programming language, exhibits a number of unusual features reminiscent of the Turing machines and other abstract automata. 
+Nutes (reverse of Setun) is a simple abstract machine, a ternary variety of OISC (one instruction set computer). Invented as a tribute to early Soviet computers,  this machine, also implementing an esoteric programming language, exhibits a number of unusual features reminiscent of Turing machines and other abstract automata. 
 
 Another source of inspiration behind this projects is SUBLEQ, a one instruction set computer that uses "subtract and branch if negative" as its sole operation. SUBLEQ is trivial to emulate by Nutes.
 
